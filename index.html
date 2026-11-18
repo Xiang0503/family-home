@@ -11,10 +11,15 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="description" content="507號：今日新聞、股市摘要、食譜和音樂，給家人看的首頁。">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="507號">
+<meta property="og:title" content="507號">
+<meta property="og:description" content="今日新聞、股市摘要、食譜和音樂，給家人看的首頁。">
+<meta property="og:image" content="https://xiang-family.pages.dev/icon-512.png">
+<meta name="twitter:card" content="summary">
 <title>507號</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@900&display=swap" rel="stylesheet">
 <style>
 /* 設計構想：深夜的家。黑底、米白大明體標題、一個暖黃色（窗燈）當重點色；首頁是一幅亮著燈的房子插圖，日期與時鐘直接排成大字，四個入口是玻璃質感的膠囊。四個功能各有顏色（新聞藍、股市琥珀、食譜綠、音樂紫）。台股慣例：紅漲綠跌 */
 :root {
@@ -34,8 +39,8 @@
   --tint: color-mix(in srgb, var(--fill) 26%, var(--surface));
   --glass: rgba(255,255,255,.05);
   --glass-line: rgba(255,255,255,.16);
-  --font-body: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
-  --font-display: "Noto Serif TC", "Songti TC", "PMingLiU", serif;
+  --font-body: "PingFang TC", "Noto Sans TC", "Noto Sans CJK TC", "Microsoft JhengHei", "Heiti TC", sans-serif;
+  --font-display: "Songti TC", "Noto Serif TC", "Noto Serif CJK TC", "Source Han Serif TC", "PMingLiU", serif;
   color-scheme: dark;
 }
 * { box-sizing: border-box; }
@@ -84,6 +89,7 @@ em { font-style: normal; display: inline-block; font-size: 16px; color: var(--mu
 .band .art { position: absolute; right: 10px; top: 10px; width: 132px; height: auto; pointer-events: none; }
 .band .back { display: inline-flex; align-items: center; min-height: 52px; padding: 6px 22px; border-radius: 999px; background: rgba(0,0,0,.28); border: 1px solid var(--glass-line); color: var(--ink); font-size: 21px; font-weight: 700; text-decoration: none; }
 .band h1 { margin: 14px 0 6px; }
+.stale { margin: 12px 0 0; padding: 10px 14px; border-radius: 14px; background: rgba(244,184,96,.16); border: 1px solid var(--glow); color: var(--ink); font-size: 18px; font-weight: 700; line-height: 1.5; }
 .band .stamp { color: color-mix(in srgb, var(--ink) 82%, transparent); }
 .back:active, .back-bottom:active { background: rgba(255,255,255,.12); }
 .back-bottom { display: block; width: 100%; text-align: center; text-decoration: none; font-size: 24px; font-weight: 700; min-height: 72px; line-height: 70px; margin-top: 38px; border-radius: 999px; background: var(--glass); border: 1px solid var(--glass-line); color: var(--ink); }
@@ -309,11 +315,6 @@ details[open] summary::after { content: "收起來"; }
     <li><b>水庫設光電板，環境部說水質沒受影響（11/18）</b>環境部長彭啓明說，去年實驗確認光電板不是有害事業廢棄物，部會會持續監控水質。經濟部則說先前調查範圍包括屋頂、停車場、地面和水面，只是評估潛力，不代表要設置。<a href="https://www.cna.com.tw/news/ahel/202611180039.aspx" target="_blank" rel="noopener">出處：中央社</a></li>
     <li><b>高鐵選舉疏運，加開 22 班車（11/17）</b>11 月 28 日投票，高鐵 18 日凌晨起開放購票。27 日傍晚南下尖峰，南港、台北、板橋站的自由座首度採閘門管制。選舉期間共加開 71 班。<a href="https://www.cna.com.tw/news/ahel/202611170052.aspx" target="_blank" rel="noopener">出處：中央社</a></li>
     <li><b>彰化花壇螺絲工廠大火（11/18）</b>18 日上午 7 點多起火，消防局派 22 輛車、51 人灌救。火勢波及隔壁冷凍食品工廠，一名住戶吸入濃煙受傷，廠內人員及時撤離。起火原因還在調查。<a href="https://www.setn.com/news/1940807" target="_blank" rel="noopener">出處：三立新聞網</a></li>
-    <li><b>輝達財報好，台股開高後轉弱（11/18）</b>台股早盤一度漲逾 800 點，逼近 41,000 點，之後不敵科技股賣壓，盤中跌破 4 萬點，AI 股多半欲振乏力。詳情請看「股市摘要」。<a href="https://www.cna.com.tw/news/afe/202611180077.aspx" target="_blank" rel="noopener">出處：中央社（午盤）</a></li>
-    <li><b>國軍雲豹甲車撞斷電線桿（11/18）</b><em>只看到標題，詳情請點出處。</em>標題寫著，國軍雲豹甲車演訓時撞斷電線桿，車長頭部擦挫傷送醫。<a href="https://www.setn.com/news/1940821" target="_blank" rel="noopener">出處：三立新聞網</a></li>
-    <li><b>台東關山里長候選人涉賄遭起訴（11/17）</b><em>只看到標題，詳情請點出處。</em>標題寫著，贈禮價格超過標準 13 倍。<a href="https://www.chinatimes.com/realtimenews/20261117002391-260402" target="_blank" rel="noopener">出處：中時新聞網</a></li>
-    <li><b>蘭嶼椰油聚會所啟用（11/17）</b><em>只看到標題，詳情請點出處。</em>標題寫著，停工延宕 10 年，終於正式啟用。<a href="https://www.chinatimes.com/realtimenews/20261117002204-260405" target="_blank" rel="noopener">出處：中時新聞網</a></li>
-    <li><b>三大無人載具海測場域開放（11/17）</b><em>只看到標題，詳情請點出處。</em>標題寫著，目的是加速驗證國防自主打造的海上戰力。<a href="https://www.chinatimes.com/realtimenews/20261117002284-260417" target="_blank" rel="noopener">出處：中時新聞網</a></li>
   </ol>
 
   <h2>國際</h2>
@@ -327,11 +328,7 @@ details[open] summary::after { content: "收起來"; }
     <li><b>伊朗說美軍空襲荷莫茲海峽的島（11/18 報導）</b>伊朗官員說，美軍攻擊葛希姆島，傳出 5 到 6 聲爆炸，但沒有造成民宅或基礎設施損害。這些說法都來自伊朗方面，報導沒有獨立證實，也沒有看到美方回應。<a href="https://www.cna.com.tw/news/aopl/202611180030.aspx" target="_blank" rel="noopener">出處：中央社</a></li>
     <li><b>美國科技當機潮，連國安局也受影響（11/18）</b>國安局說是例行網路維護造成暫時效能下降，重要功能仍在運作。美國國務卿盧比歐 18 日說，這些事造成交通大亂、工作停擺、銀行服務受限，但目前沒有資訊顯示事件互有關聯或涉及惡意行為者。<a href="https://www.cna.com.tw/news/aopl/202611180068.aspx" target="_blank" rel="noopener">出處：中央社（盧比歐）</a> <a href="https://www.cna.com.tw/news/aopl/202611180028.aspx" target="_blank" rel="noopener">出處：中央社（國安局）</a></li>
     <li><b>178 個網站被第三方軟體波及（11/18）</b>包括 Zoom、匯豐、CNN、宜家家居等。研究人員說，攻擊者透過一個網站客製化工具植入惡意程式碼，想換掉加密貨幣付款地址。該工具公司說已修補並移除程式碼。<a href="https://www.cna.com.tw/news/aopl/202611180029.aspx" target="_blank" rel="noopener">出處：中央社</a></li>
-    <li><b>俄羅斯軍用運輸機在西伯利亞墜毀（11/18）</b>機上 19 人全數罹難。俄方初步說法是機械故障，墜毀地點在無人居住的地區，軍方調查委員會已到現場。<a href="https://www.cna.com.tw/news/aopl/202611180008.aspx" target="_blank" rel="noopener">出處：中央社</a></li>
     <li><b>法國近 15 萬人再上街（11/17）</b>示威已持續近兩個月，訴求是增加教育資源、提高薪資。內政部估計全國 14.6 萬人，工會估計超過 50 萬人。政府宣布基本薪資 12 月 1 日起調高 1.6%，工會說太少。<a href="https://www.cna.com.tw/news/aopl/202611180018.aspx" target="_blank" rel="noopener">出處：中央社</a></li>
-    <li><b>黃仁勳 12 月 1 日赴眾議院委員會（11/18）</b><em>只看到標題，詳情請點出處。</em>標題寫著，美國國會說他要去接受約談。<a href="https://www.cna.com.tw/news/aopl/202611180005.aspx" target="_blank" rel="noopener">出處：中央社</a></li>
-    <li><b>比利時學生抗議教育條件變差（11/18）</b><em>只看到標題，詳情請點出處。</em>標題寫著，群眾封路，與警方對峙。<a href="https://www.cna.com.tw/news/aopl/202611180015.aspx" target="_blank" rel="noopener">出處：中央社</a></li>
-    <li><b>西班牙拍板明年最低工資漲 5.3%（11/18）</b><em>只看到標題，詳情請點出處。</em>標題寫著，商界批評是選舉考量。<a href="https://www.cna.com.tw/news/aopl/202611180013.aspx" target="_blank" rel="noopener">出處：中央社</a></li>
   </ol>
 
   <h2>想看更多，這些新聞網站</h2>
@@ -604,6 +601,24 @@ details[open] summary::after { content: "收起來"; }
       var m = src && src.textContent.match(/(\d{4})[\/.](\d{1,2})[\/.](\d{1,2}).*?(\d{1,2}):(\d{2})/);
       if (m) els[k].textContent = m[2] + "/" + m[3] + " " + (m[4].length < 2 ? "0" : "") + m[4] + ":" + m[5] + " 更新";
     }
+  })();
+  (function () {
+    var LIMIT = 8 * 3600 * 1000;
+    function check() {
+      ["news-stamp", "stock-stamp"].forEach(function (id) {
+        var st = document.getElementById(id); if (!st) return;
+        var m = st.textContent.match(/(\d{4})\/(\d{1,2})\/(\d{1,2}).*?(\d{1,2}):(\d{2})/);
+        var box = st.parentNode.querySelector(".stale");
+        var old = m && (Date.now() - Date.UTC(+m[1], +m[2] - 1, +m[3], +m[4] - 8, +m[5])) > LIMIT;
+        if (old) {
+          if (!box) { box = document.createElement("p"); box.className = "stale"; box.setAttribute("role", "status"); st.parentNode.appendChild(box); }
+          var h = Math.floor((Date.now() - Date.UTC(+m[1], +m[2] - 1, +m[3], +m[4] - 8, +m[5])) / 3600000);
+          box.textContent = "提醒：這一頁已經超過 " + h + " 小時沒更新，內容可能不是最新的。";
+        } else if (box) { box.parentNode.removeChild(box); }
+      });
+    }
+    check(); setInterval(check, 600000);
+    document.addEventListener("visibilitychange", check);
   })();
 </script>
 </body>
