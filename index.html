@@ -6,141 +6,125 @@
 <title>我們家的首頁</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@900&display=swap" rel="stylesheet">
 <style>
-/* 設計構想：首頁是一張家裡牆上的撕頁日曆，紅色頂條、大日期、星期日轉紅；四個入口是實心色塊（新聞藍、股市琥珀、食譜綠、音樂紫），進入後頁首沿用同一個顏色。內文是平的清單，不做陰影與圓角卡片。台股慣例：紅漲綠跌 */
+/* 設計構想：深夜的家。黑底、米白大明體標題、一個暖黃色（窗燈）當重點色；首頁是一幅亮著燈的房子插圖，日期與時鐘直接排成大字，四個入口是玻璃質感的膠囊。四個功能各有顏色（新聞藍、股市琥珀、食譜綠、音樂紫）。台股慣例：紅漲綠跌 */
 :root {
-  --bg: #e9edf0;
-  --surface: #ffffff;
-  --ink: #16191f;
-  --muted: #59616e;
-  --line: #d3d9de;
-  --red: #c5281c;
-  --red-t: #c5281c;
-  --up: #c62828;
-  --down: #1b7f3b;
-  --a-news: #1b5aa6; --t-news: #1b5aa6;
-  --a-stock: #955500; --t-stock: #955500;
-  --a-recipe: #1f6e49; --t-recipe: #1f6e49;
-  --a-music: #6341a3; --t-music: #6341a3;
-  --accent: #1b5aa6;
-  --accent-t: #1b5aa6;
-  --tint: color-mix(in srgb, var(--accent) 9%, var(--surface));
+  --bg: #0c0e12;
+  --surface: #151920;
+  --ink: #f0eadd;
+  --muted: #aaa496;
+  --line: #2a2e37;
+  --glow: #f4b860;
+  --up: #ff7a73;
+  --down: #5fd488;
+  --f-news: #1b5aa6; --a-news: #8dbbf5;
+  --f-stock: #955500; --a-stock: #f0b95a;
+  --f-recipe: #1f6e49; --a-recipe: #7fd4a6;
+  --f-music: #6341a3; --a-music: #bda8f2;
+  --accent: #8dbbf5; --fill: #1b5aa6;
+  --tint: color-mix(in srgb, var(--fill) 26%, var(--surface));
+  --glass: rgba(255,255,255,.05);
+  --glass-line: rgba(255,255,255,.16);
   --font-body: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
-  color-scheme: light;
-}
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --bg: #12161b; --surface: #1c2128; --ink: #eef1f5; --muted: #a9b2bf; --line: #2e353f;
-    --red-t: #ff7a6e; --up: #ff7a73; --down: #5fd488;
-    --t-news: #8dbbf5; --t-stock: #f0b95a; --t-recipe: #6fd0a0; --t-music: #bda8f2;
-    --accent-t: #8dbbf5;
-    color-scheme: dark;
-  }
-}
-:root[data-theme="dark"] {
-  --bg: #12161b; --surface: #1c2128; --ink: #eef1f5; --muted: #a9b2bf; --line: #2e353f;
-  --red-t: #ff7a6e; --up: #ff7a73; --down: #5fd488;
-  --t-news: #8dbbf5; --t-stock: #f0b95a; --t-recipe: #6fd0a0; --t-music: #bda8f2;
-  --accent-t: #8dbbf5;
+  --font-display: "Noto Serif TC", "Songti TC", "PMingLiU", serif;
   color-scheme: dark;
 }
 * { box-sizing: border-box; }
 html, body { margin: 0; }
+html { background: var(--bg); }
 body { background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 21px; line-height: 1.8; -webkit-text-size-adjust: 100%; }
 .wrap { max-width: 720px; margin: 0 auto; padding: 0 16px 64px; }
-#news { --accent: var(--a-news); --accent-t: var(--t-news); }
-#stock { --accent: var(--a-stock); --accent-t: var(--t-stock); }
-#recipe { --accent: var(--a-recipe); --accent-t: var(--t-recipe); }
-#music { --accent: var(--a-music); --accent-t: var(--t-music); }
+#news { --accent: var(--a-news); --fill: var(--f-news); }
+#stock { --accent: var(--a-stock); --fill: var(--f-stock); }
+#recipe { --accent: var(--a-recipe); --fill: var(--f-recipe); }
+#music { --accent: var(--a-music); --fill: var(--f-music); }
 section[hidden] { display: none; }
 button, a { font-family: inherit; }
-a:focus-visible, button:focus-visible, summary:focus-visible, input:focus-visible { outline: 4px solid var(--accent-t); outline-offset: 3px; }
-h1 { font-size: 40px; font-weight: 900; line-height: 1.3; margin: 0; text-wrap: balance; }
-h2 { font-size: 26px; font-weight: 900; line-height: 1.4; margin: 36px 0 12px; padding-bottom: 6px; border-bottom: 3px solid var(--accent); color: var(--accent-t); }
-h2 small { font-size: 16px; color: var(--muted); font-weight: 400; margin-left: 8px; }
+a:focus-visible, button:focus-visible, summary:focus-visible, input:focus-visible { outline: 4px solid var(--glow); outline-offset: 3px; }
+h1 { font-family: var(--font-display); font-size: 52px; font-weight: 900; line-height: 1.25; margin: 0; text-wrap: balance; }
+h2 { font-family: var(--font-display); font-size: 28px; font-weight: 900; line-height: 1.4; margin: 38px 0 12px; padding-bottom: 8px; border-bottom: 1px solid var(--line); color: var(--accent); }
+h2 small { font-family: var(--font-body); font-size: 16px; color: var(--muted); font-weight: 400; margin-left: 8px; }
 .stamp { color: var(--muted); font-size: 17px; margin: 0; }
-em { font-style: normal; display: inline-block; font-size: 16px; color: var(--muted); background: var(--tint); border-radius: 999px; padding: 0 12px; margin-right: 6px; line-height: 1.6; }
+em { font-style: normal; display: inline-block; font-size: 16px; color: var(--muted); background: var(--glass); border: 1px solid var(--glass-line); border-radius: 999px; padding: 0 12px; margin-right: 6px; line-height: 1.6; }
 
-/* 首頁：撕頁日曆 */
-#home { padding-top: 20px; }
-#home h1 { font-size: 30px; }
-.titlerow { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
-.house { width: 52px; height: 52px; flex: none; }
-.cal { box-shadow: 0 6px 0 -3px var(--surface), 0 7px 0 -3px var(--line), 0 12px 0 -6px var(--surface), 0 13px 0 -6px var(--line); position: relative; background: var(--surface); border: 1px solid var(--line); border-radius: 8px 8px 16px 16px; overflow: hidden; text-align: center; }
-.cal::before, .cal::after { content: ""; position: absolute; top: 9px; width: 14px; height: 14px; border-radius: 50%; background: var(--bg); }
-.cal::before { left: 18%; } .cal::after { right: 18%; }
-.cal-top { background: var(--red); color: #fff; font-size: 24px; font-weight: 700; letter-spacing: .06em; padding: 20px 0 10px; }
-.cal-day { font-size: 132px; font-weight: 900; line-height: 1.05; padding-top: 8px; font-variant-numeric: tabular-nums; }
-.cal-day.sun { color: var(--red-t); }
-.cal-wd { font-size: 32px; font-weight: 700; padding-bottom: 14px; }
-.cal-time { font-size: 46px; font-weight: 700; font-variant-numeric: tabular-nums; letter-spacing: .04em; line-height: 1.2; padding-bottom: 14px; }
-.cal-foot { border-top: 2px dashed var(--line); margin: 0 16px; padding: 12px 0 14px; color: var(--muted); font-size: 20px; }
-.menu { display: grid; gap: 12px; margin-top: 28px; }
-.menu a { --c: var(--a-news); display: flex; align-items: center; gap: 16px; text-decoration: none; background: var(--c); color: #fff; border-radius: 12px; padding: 14px 18px 14px 14px; min-height: 112px; }
-.menu a.m-news { --c: var(--a-news); } .menu a.m-stock { --c: var(--a-stock); } .menu a.m-recipe { --c: var(--a-recipe); } .menu a.m-music { --c: var(--a-music); }
-.menu .ic { flex: none; width: 108px; height: 86px; border-radius: 12px; overflow: hidden; background: rgba(255,255,255,.14); }
+/* 首頁 */
+#home { padding-top: 0; }
+.hero { position: relative; min-height: 600px; margin: 0 -16px; padding: 64px 22px 0; overflow: hidden; }
+.hero-title { font-size: 104px; font-weight: 900; line-height: 1.1; letter-spacing: .02em; position: relative; z-index: 1; }
+.hero-sub { position: relative; z-index: 1; margin: 6px 0 0; color: var(--glow); font-size: 24px; font-weight: 700; letter-spacing: .5em; }
+.scene { position: absolute; left: 0; right: 0; bottom: 0; width: 100%; height: auto; display: block; }
+.when { padding: 4px 0 0; }
+.when-date { font-size: 30px; font-weight: 500; letter-spacing: .08em; font-variant-numeric: tabular-nums; }
+.when-date.sun { color: var(--up); }
+.when-time { font-size: 56px; font-weight: 700; letter-spacing: .06em; line-height: 1.25; color: var(--glow); font-variant-numeric: tabular-nums; }
+.when-greet { color: var(--muted); font-size: 20px; border-top: 1px solid var(--line); margin-top: 14px; padding-top: 12px; }
+.menu { display: grid; gap: 12px; margin-top: 26px; }
+.menu a { --f: var(--f-news); --a: var(--a-news); display: flex; align-items: center; gap: 14px; text-decoration: none; color: var(--ink); background: var(--glass); border: 1px solid var(--glass-line); border-radius: 26px; padding: 12px 14px 12px 12px; min-height: 108px; }
+.menu a.m-news { --f: var(--f-news); --a: var(--a-news); } .menu a.m-stock { --f: var(--f-stock); --a: var(--a-stock); } .menu a.m-recipe { --f: var(--f-recipe); --a: var(--a-recipe); } .menu a.m-music { --f: var(--f-music); --a: var(--a-music); }
+.menu .ic { flex: none; width: 92px; height: 74px; border-radius: 16px; overflow: hidden; background: var(--f); }
 .menu .ic svg { width: 100%; height: 100%; display: block; }
-.menu a b { display: block; font-size: 32px; font-weight: 900; line-height: 1.35; color: #fff; }
-.menu a span { display: block; font-size: 19px; line-height: 1.5; color: rgba(255,255,255,.92); }
-.menu a::after { content: "›"; margin-left: auto; font-size: 38px; line-height: 1; color: #fff; }
-.menu a:active { filter: brightness(.9); }
+.menu a b { display: block; font-size: 30px; font-weight: 700; line-height: 1.35; color: var(--ink); }
+.menu a span { display: block; font-size: 19px; line-height: 1.5; color: var(--muted); }
+.menu .go { margin-left: auto; flex: none; width: 46px; height: 46px; border-radius: 50%; display: grid; place-items: center; font-style: normal; font-size: 24px; line-height: 1; color: var(--a); background: color-mix(in srgb, var(--a) 16%, transparent); border: 1px solid color-mix(in srgb, var(--a) 40%, transparent); }
+.menu a:active { background: rgba(255,255,255,.1); }
 
 /* 內頁頁首 */
-.band { position: relative; overflow: hidden; background: var(--accent); color: #fff; margin: 0 -16px 22px; padding: 14px 16px 18px; }
+.band { position: relative; overflow: hidden; background: linear-gradient(180deg, color-mix(in srgb, var(--fill) 60%, var(--bg)) 0%, var(--bg) 100%); margin: 0 -16px 22px; padding: 14px 16px 26px; }
 .band .art { position: absolute; right: 10px; top: 10px; width: 132px; height: auto; pointer-events: none; }
-.band .back { display: inline-flex; align-items: center; min-height: 52px; padding: 6px 20px; border-radius: 999px; background: rgba(255,255,255,.2); color: #fff; font-size: 21px; font-weight: 700; text-decoration: none; }
-.band h1 { color: #fff; margin: 12px 0 4px; }
-.band .stamp { color: rgba(255,255,255,.92); }
-.back:active, .back-bottom:active { filter: brightness(.9); }
-.back-bottom { display: block; width: 100%; text-align: center; text-decoration: none; font-size: 26px; font-weight: 700; min-height: 76px; line-height: 76px; margin-top: 36px; border-radius: 12px; background: var(--accent); color: #fff; }
+.band .back { display: inline-flex; align-items: center; min-height: 52px; padding: 6px 22px; border-radius: 999px; background: rgba(0,0,0,.28); border: 1px solid var(--glass-line); color: var(--ink); font-size: 21px; font-weight: 700; text-decoration: none; }
+.band h1 { margin: 14px 0 6px; }
+.band .stamp { color: color-mix(in srgb, var(--ink) 82%, transparent); }
+.back:active, .back-bottom:active { background: rgba(255,255,255,.12); }
+.back-bottom { display: block; width: 100%; text-align: center; text-decoration: none; font-size: 24px; font-weight: 700; min-height: 72px; line-height: 70px; margin-top: 38px; border-radius: 999px; background: var(--glass); border: 1px solid var(--glass-line); color: var(--ink); }
 
 /* 內文 */
-.lead { background: var(--tint); border-radius: 10px; padding: 16px 20px; margin-bottom: 8px; font-size: 22px; }
-.lead b { color: var(--accent-t); }
+.lead { background: var(--tint); border-radius: 18px; padding: 16px 20px; margin-bottom: 8px; font-size: 22px; }
+.lead b { color: var(--accent); }
 .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px; margin-bottom: 8px; }
-.stat { background: var(--surface); border-top: 5px solid var(--accent); border-radius: 4px 4px 10px 10px; padding: 10px 14px 12px; }
+.stat { background: var(--surface); border: 1px solid var(--line); border-top: 4px solid var(--accent); border-radius: 6px 6px 16px 16px; padding: 10px 14px 12px; }
 .stat .k { color: var(--muted); font-size: 17px; line-height: 1.5; }
 .stat .v { font-size: 28px; font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1.3; }
 .stat .d { font-size: 18px; font-weight: 700; font-variant-numeric: tabular-nums; }
 .dn { color: var(--down); } .upc { color: var(--up); }
 ol.story { margin: 0; padding: 0; list-style: none; }
-ol.story li { border-left: 6px solid var(--accent); padding: 8px 0 8px 16px; margin-bottom: 14px; }
+ol.story li { border-left: 4px solid var(--accent); padding: 8px 0 8px 16px; margin-bottom: 14px; }
 ol.story b { display: block; line-height: 1.6; margin-bottom: 2px; }
-ol.story a { color: var(--accent-t); font-weight: 700; font-size: 19px; text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 2px; }
+ol.story a { color: var(--accent); font-weight: 700; font-size: 19px; text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 2px; }
 .links { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 10px; }
-.links a { display: block; text-decoration: none; background: var(--surface); color: var(--ink); border: 2px solid var(--accent); border-radius: 10px; padding: 10px 16px; min-height: 72px; }
-.links a b { display: block; color: var(--accent-t); font-size: 21px; line-height: 1.4; }
+.links a { display: block; text-decoration: none; background: var(--glass); color: var(--ink); border: 1px solid var(--glass-line); border-left: 6px solid var(--accent); border-radius: 16px; padding: 10px 16px; min-height: 72px; }
+.links a b { display: block; color: var(--accent); font-size: 21px; line-height: 1.4; }
 .links a span { display: block; color: var(--muted); font-size: 17px; line-height: 1.4; }
-.links a:active { background: var(--tint); }
+.links a:active { background: rgba(255,255,255,.1); }
 .note { color: var(--muted); font-size: 17px; margin-top: 26px; border-top: 1px solid var(--line); padding-top: 12px; }
-.weather { background: var(--tint); border-radius: 10px; padding: 16px 20px; margin-bottom: 10px; }
-.weather b { color: var(--accent-t); }
-.weather a { color: var(--accent-t); font-weight: 700; font-size: 19px; text-underline-offset: 4px; }
+.note a { color: var(--accent); }
+.weather { background: var(--tint); border-radius: 18px; padding: 16px 20px; margin-bottom: 10px; }
+.weather b { color: var(--accent); }
+.weather a { color: var(--accent); font-weight: 700; font-size: 19px; text-underline-offset: 4px; }
 
 /* 食譜與音樂 */
-.sample { border: 2px dashed var(--line); border-radius: 10px; padding: 10px 14px; font-size: 18px; color: var(--muted); margin-bottom: 18px; }
-details { background: var(--surface); border-left: 6px solid var(--accent); border-radius: 4px 10px 10px 4px; margin-bottom: 10px; }
-summary { list-style: none; cursor: pointer; font-size: 28px; font-weight: 900; padding: 14px 18px; min-height: 72px; display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.sample { border: 1px dashed var(--glass-line); border-radius: 14px; padding: 10px 14px; font-size: 18px; color: var(--muted); margin-bottom: 18px; }
+details { background: var(--surface); border: 1px solid var(--line); border-left: 5px solid var(--accent); border-radius: 6px 18px 18px 6px; margin-bottom: 10px; }
+summary { list-style: none; cursor: pointer; font-family: var(--font-display); font-size: 28px; font-weight: 900; padding: 14px 18px; min-height: 72px; display: flex; justify-content: space-between; align-items: center; gap: 12px; }
 summary::-webkit-details-marker { display: none; }
-summary::after { content: "看做法"; font-size: 19px; font-weight: 500; color: #fff; background: var(--accent); border-radius: 999px; padding: 2px 16px; flex: none; }
+summary::after { content: "看做法"; font-family: var(--font-body); font-size: 19px; font-weight: 700; color: #0c0e12; background: var(--accent); border-radius: 999px; padding: 2px 16px; flex: none; }
 details[open] summary::after { content: "收起來"; }
 .rbody { padding: 0 20px 18px; }
-.rbody h3 { font-size: 22px; color: var(--accent-t); margin: 14px 0 4px; }
+.rbody h3 { font-size: 22px; color: var(--accent); margin: 14px 0 4px; }
 .rbody ul, .rbody ol { margin: 0; padding-left: 1.3em; }
 .todo { color: var(--muted); }
-.finder { background: var(--surface); border: 2px solid var(--accent); border-radius: 10px; padding: 16px 18px; }
+.finder { background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 16px 18px; }
 .finder label { display: block; margin-bottom: 8px; }
-.finder input { display: block; width: 100%; font-size: 24px; min-height: 64px; padding: 8px 16px; margin-bottom: 12px; border: 2px solid var(--line); border-radius: 10px; background: var(--bg); color: var(--ink); font-family: inherit; }
+.finder input { display: block; width: 100%; font-size: 24px; min-height: 64px; padding: 8px 16px; margin-bottom: 12px; border: 1px solid var(--glass-line); border-radius: 14px; background: var(--bg); color: var(--ink); font-family: inherit; }
 .hrow { display: flex; gap: 10px; align-items: stretch; }
 .hrow .song { flex: 1; }
-.hrow .del { flex: none; min-width: 72px; font-size: 20px; font-weight: 700; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); color: var(--muted); }
-.clear { font-size: 20px; min-height: 56px; padding: 8px 22px; margin-top: 12px; border: 1px solid var(--line); border-radius: 999px; background: var(--surface); color: var(--muted); }
+.hrow .del { flex: none; min-width: 72px; font-size: 20px; font-weight: 700; border: 1px solid var(--glass-line); border-radius: 14px; background: var(--glass); color: var(--muted); }
+.clear { font-size: 20px; min-height: 56px; padding: 8px 22px; margin-top: 12px; border: 1px solid var(--glass-line); border-radius: 999px; background: var(--glass); color: var(--muted); }
 .songs { display: grid; gap: 10px; }
-.song { display: block; text-decoration: none; background: var(--surface); color: var(--ink); border-left: 8px solid var(--accent); border-radius: 4px 10px 10px 4px; padding: 12px 20px; min-height: 80px; }
+.song { display: block; text-decoration: none; background: var(--surface); color: var(--ink); border: 1px solid var(--line); border-left: 6px solid var(--accent); border-radius: 6px 16px 16px 6px; padding: 12px 20px; min-height: 80px; }
 .song b { display: block; font-size: 28px; line-height: 1.5; }
 .song span { color: var(--muted); font-size: 19px; }
-@media (max-width: 420px) { body { font-size: 19px; } h1 { font-size: 34px; } #home h1 { font-size: 28px; } .cal-day { font-size: 112px; } .cal-time { font-size: 40px; } .menu a b { font-size: 29px; } .menu .ic { width: 92px; height: 74px; } .lead { font-size: 20px; } summary { font-size: 24px; } }
+@media (max-width: 420px) { body { font-size: 19px; } h1 { font-size: 44px; } .hero-title { font-size: 92px; } .hero { padding-top: 56px; min-height: 560px; } .when-time { font-size: 50px; } .menu a b { font-size: 27px; } .menu .ic { width: 80px; height: 66px; } .lead { font-size: 20px; } summary { font-size: 24px; } }
 </style>
 </head>
 <body>
@@ -148,19 +132,44 @@ details[open] summary::after { content: "收起來"; }
 
 <!-- ========== 首頁 ========== -->
 <section id="home">
-  <div class="titlerow"><h1>我們家的首頁</h1><svg class="house" viewBox="0 0 64 64" aria-hidden="true"><path d="M8 30L32 8l24 22" fill="none" stroke="var(--red)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/><rect x="14" y="30" width="36" height="26" rx="3" fill="var(--surface)" stroke="var(--ink)" stroke-width="3"/><rect x="27" y="40" width="10" height="16" rx="2" fill="var(--a-news)"/><rect x="18" y="35" width="7" height="7" fill="var(--a-stock)"/><rect x="39" y="35" width="7" height="7" fill="var(--a-recipe)"/><rect x="40" y="12" width="6" height="12" fill="var(--red)"/></svg></div>
-  <div class="cal" aria-label="今天的日期">
-    <div class="cal-top" id="cal-ym">2026 年 11 月</div>
-    <div class="cal-day" id="cal-d">18</div>
-    <div class="cal-wd" id="cal-w">星期三</div>
-    <div class="cal-time" id="cal-t" aria-hidden="true">09:50:00</div>
-    <div class="cal-foot" id="cal-foot">想看什麼，點一下就好。</div>
+  <div class="hero">
+    <h1 class="hero-title">我們家</h1>
+    <p class="hero-sub">全家人的首頁</p>
+    <svg class="scene" viewBox="0 0 420 420" aria-hidden="true" preserveAspectRatio="xMidYMax slice">
+<defs>
+<linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0c0e12" stop-opacity="0"/><stop offset=".45" stop-color="#121a26"/><stop offset=".85" stop-color="#2a2430"/></linearGradient>
+<linearGradient id="gnd" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#11161e"/><stop offset="1" stop-color="#0c0e12"/></linearGradient>
+<radialGradient id="glow" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#f6c06a" stop-opacity=".42"/><stop offset="1" stop-color="#f6c06a" stop-opacity="0"/></radialGradient>
+<mask id="moon"><rect width="420" height="420" fill="#fff"/><circle cx="342" cy="62" r="24" fill="#000"/></mask>
+</defs>
+<rect width="420" height="420" fill="url(#sky)"/>
+<circle cx="173" cy="46" r="1.6" fill="#f0eadd" opacity="0.35"/><circle cx="45" cy="218" r="0.8" fill="#f0eadd" opacity="0.70"/><circle cx="306" cy="22" r="1.0" fill="#f0eadd" opacity="0.35"/><circle cx="52" cy="119" r="1.6" fill="#f0eadd" opacity="0.35"/><circle cx="131" cy="31" r="1.6" fill="#f0eadd" opacity="0.35"/><circle cx="297" cy="39" r="1.0" fill="#f0eadd" opacity="0.35"/><circle cx="303" cy="157" r="1.6" fill="#f0eadd" opacity="0.35"/><circle cx="121" cy="19" r="1.0" fill="#f0eadd" opacity="0.70"/><circle cx="222" cy="44" r="0.8" fill="#f0eadd" opacity="0.70"/><circle cx="294" cy="216" r="1.0" fill="#f0eadd" opacity="0.35"/><circle cx="305" cy="154" r="1.0" fill="#f0eadd" opacity="0.70"/><circle cx="57" cy="148" r="0.8" fill="#f0eadd" opacity="0.35"/><circle cx="324" cy="60" r="1.6" fill="#f0eadd" opacity="0.90"/><circle cx="405" cy="88" r="1.6" fill="#f0eadd" opacity="0.90"/><circle cx="193" cy="84" r="1.0" fill="#f0eadd" opacity="0.50"/><circle cx="365" cy="207" r="1.0" fill="#f0eadd" opacity="0.35"/><circle cx="302" cy="84" r="1.6" fill="#f0eadd" opacity="0.70"/><circle cx="381" cy="122" r="1.2" fill="#f0eadd" opacity="0.35"/><circle cx="68" cy="139" r="1.6" fill="#f0eadd" opacity="0.50"/><circle cx="395" cy="95" r="1.0" fill="#f0eadd" opacity="0.90"/><circle cx="223" cy="18" r="0.8" fill="#f0eadd" opacity="0.70"/><circle cx="182" cy="185" r="1.2" fill="#f0eadd" opacity="0.90"/><circle cx="304" cy="212" r="1.6" fill="#f0eadd" opacity="0.35"/><circle cx="55" cy="77" r="1.6" fill="#f0eadd" opacity="0.35"/><circle cx="39" cy="195" r="1.2" fill="#f0eadd" opacity="0.90"/><circle cx="153" cy="191" r="1.6" fill="#f0eadd" opacity="0.70"/><circle cx="19" cy="126" r="1.2" fill="#f0eadd" opacity="0.50"/><circle cx="320" cy="37" r="1.6" fill="#f0eadd" opacity="0.35"/><circle cx="119" cy="204" r="1.2" fill="#f0eadd" opacity="0.50"/><circle cx="386" cy="71" r="1.6" fill="#f0eadd" opacity="0.90"/><circle cx="262" cy="28" r="1.0" fill="#f0eadd" opacity="0.90"/><circle cx="213" cy="148" r="1.2" fill="#f0eadd" opacity="0.50"/><circle cx="228" cy="229" r="1.2" fill="#f0eadd" opacity="0.90"/><circle cx="191" cy="182" r="1.6" fill="#f0eadd" opacity="0.50"/><circle cx="85" cy="29" r="1.0" fill="#f0eadd" opacity="0.50"/><circle cx="126" cy="176" r="1.0" fill="#f0eadd" opacity="0.35"/><circle cx="256" cy="220" r="1.0" fill="#f0eadd" opacity="0.70"/><circle cx="152" cy="9" r="1.0" fill="#f0eadd" opacity="0.90"/><circle cx="281" cy="102" r="1.2" fill="#f0eadd" opacity="0.50"/><circle cx="361" cy="227" r="0.8" fill="#f0eadd" opacity="0.90"/><circle cx="407" cy="182" r="1.6" fill="#f0eadd" opacity="0.90"/><circle cx="212" cy="108" r="0.8" fill="#f0eadd" opacity="0.90"/><circle cx="332" cy="110" r="0.8" fill="#f0eadd" opacity="0.50"/><circle cx="42" cy="61" r="1.6" fill="#f0eadd" opacity="0.50"/><circle cx="64" cy="95" r="0.8" fill="#f0eadd" opacity="0.35"/><circle cx="8" cy="153" r="1.0" fill="#f0eadd" opacity="0.35"/>
+<circle cx="330" cy="68" r="26" fill="#ece4d0" mask="url(#moon)"/>
+<path d="M0 292 Q80 244 170 282 T330 262 T420 280 V420 H0Z" fill="#151c27"/>
+<path d="M0 316 Q100 280 210 312 T420 300 V420 H0Z" fill="#10161f"/>
+<ellipse cx="210" cy="306" rx="150" ry="78" fill="url(#glow)"/>
+<g fill="#0b0f15"><rect x="62" y="318" width="8" height="40"/><circle cx="66" cy="304" r="22"/><circle cx="50" cy="318" r="16"/><circle cx="82" cy="318" r="16"/><rect x="352" y="322" width="8" height="38"/><circle cx="356" cy="308" r="20"/><circle cx="342" cy="322" r="15"/><circle cx="370" cy="322" r="15"/></g>
+<path d="M254 232q-9-14 3-26q12-12-2-28" fill="none" stroke="#ece4d0" stroke-opacity=".3" stroke-width="5" stroke-linecap="round"/>
+<rect x="246" y="236" width="14" height="30" fill="#242b38"/>
+<polygon points="138,274 210,222 282,274" fill="#242b38"/>
+<rect x="150" y="272" width="120" height="70" fill="#1b2029"/>
+<circle cx="210" cy="252" r="8" fill="#f6c06a"/>
+<rect x="164" y="288" width="24" height="26" rx="2" fill="#f6c06a"/><rect x="232" y="288" width="24" height="26" rx="2" fill="#f6c06a"/>
+<rect x="199" y="302" width="22" height="40" rx="3" fill="#e0a24f"/>
+<path d="M199 342L182 380H238L221 342Z" fill="#f6c06a" opacity=".16"/>
+<rect y="340" width="420" height="80" fill="url(#gnd)" opacity=".92"/>
+</svg>
+  </div>
+  <div class="when">
+    <div class="when-date" id="when-date">2026.11.18　星期三</div>
+    <div class="when-time" id="when-time" aria-hidden="true">10:10:00</div>
+    <div class="when-greet" id="when-greet">想看什麼，點一下就好。</div>
   </div>
   <nav class="menu" aria-label="主選單">
-    <a class="m-news" href="#news"><div class="ic" aria-hidden="true"><svg viewBox="0 0 140 110" aria-hidden="true"><circle cx="108" cy="30" r="15" fill="rgba(255,255,255,.55)"/><polygon points="0,110 26,62 44,80 76,22 108,76 124,60 140,110" fill="rgba(255,255,255,.26)"/><polygon points="0,110 40,78 70,96 104,70 140,110" fill="rgba(255,255,255,.34)"/><polygon points="76,22 66,40 72,37 76,43 82,36 88,40" fill="rgba(255,255,255,.7)"/></svg></div><div><b>今日新聞</b><span>台灣、國際、天氣</span></div></a>
-    <a class="m-stock" href="#stock"><div class="ic" aria-hidden="true"><svg viewBox="0 0 140 110" aria-hidden="true"><g fill="rgba(255,255,255,.3)"><rect x="8" y="70" width="18" height="38" rx="3"/><rect x="34" y="52" width="18" height="56" rx="3"/><rect x="60" y="60" width="18" height="48" rx="3"/><rect x="86" y="34" width="18" height="74" rx="3"/><rect x="112" y="20" width="18" height="88" rx="3"/></g><polyline points="17,62 43,44 69,52 95,26 121,12" fill="none" stroke="rgba(255,255,255,.9)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="121" cy="12" r="6" fill="#fff"/></svg></div><div><b>股市摘要</b><span>今天股市發生什麼事</span></div></a>
-    <a class="m-recipe" href="#recipe"><div class="ic" aria-hidden="true"><svg viewBox="0 0 140 110" aria-hidden="true"><path d="M20 62h100c0 26-20 42-50 42S20 88 20 62z" fill="rgba(255,255,255,.32)"/><path d="M26 62h88" stroke="rgba(255,255,255,.85)" stroke-width="4" stroke-linecap="round"/><path d="M50 44c-7-8 7-12 0-22M70 44c-7-8 7-12 0-22M90 44c-7-8 7-12 0-22" fill="none" stroke="rgba(255,255,255,.8)" stroke-width="4" stroke-linecap="round"/><path d="M96 14l24 40M106 12l22 38" stroke="rgba(255,255,255,.9)" stroke-width="4" stroke-linecap="round"/><path d="M52 104h36" stroke="rgba(255,255,255,.6)" stroke-width="4" stroke-linecap="round"/></svg></div><div><b>家常菜食譜</b><span>想做菜，看這裡</span></div></a>
-    <a class="m-music" href="#music"><div class="ic" aria-hidden="true"><svg viewBox="0 0 140 110" aria-hidden="true"><circle cx="56" cy="58" r="46" fill="rgba(255,255,255,.28)"/><circle cx="56" cy="58" r="34" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="2"/><circle cx="56" cy="58" r="22" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="2"/><circle cx="56" cy="58" r="12" fill="rgba(255,255,255,.85)"/><circle cx="56" cy="58" r="3" fill="#6341a3"/><path d="M104 74V26l26-8v46" fill="none" stroke="rgba(255,255,255,.9)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="96" cy="76" r="9" fill="rgba(255,255,255,.95)"/><circle cx="122" cy="66" r="9" fill="rgba(255,255,255,.95)"/></svg></div><div><b>聽歌與找歌</b><span>用歌詞找歌、找過的歌</span></div></a>
+    <a class="m-news" href="#news"><div class="ic" aria-hidden="true"><svg viewBox="0 0 140 110" aria-hidden="true"><circle cx="108" cy="30" r="15" fill="rgba(255,255,255,.55)"/><polygon points="0,110 26,62 44,80 76,22 108,76 124,60 140,110" fill="rgba(255,255,255,.26)"/><polygon points="0,110 40,78 70,96 104,70 140,110" fill="rgba(255,255,255,.34)"/><polygon points="76,22 66,40 72,37 76,43 82,36 88,40" fill="rgba(255,255,255,.7)"/></svg></div><div><b>今日新聞</b><span>台灣、國際、天氣</span></div><i class="go" aria-hidden="true">›</i></a>
+    <a class="m-stock" href="#stock"><div class="ic" aria-hidden="true"><svg viewBox="0 0 140 110" aria-hidden="true"><g fill="rgba(255,255,255,.3)"><rect x="8" y="70" width="18" height="38" rx="3"/><rect x="34" y="52" width="18" height="56" rx="3"/><rect x="60" y="60" width="18" height="48" rx="3"/><rect x="86" y="34" width="18" height="74" rx="3"/><rect x="112" y="20" width="18" height="88" rx="3"/></g><polyline points="17,62 43,44 69,52 95,26 121,12" fill="none" stroke="rgba(255,255,255,.9)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="121" cy="12" r="6" fill="#fff"/></svg></div><div><b>股市摘要</b><span>今天股市發生什麼事</span></div><i class="go" aria-hidden="true">›</i></a>
+    <a class="m-recipe" href="#recipe"><div class="ic" aria-hidden="true"><svg viewBox="0 0 140 110" aria-hidden="true"><path d="M20 62h100c0 26-20 42-50 42S20 88 20 62z" fill="rgba(255,255,255,.32)"/><path d="M26 62h88" stroke="rgba(255,255,255,.85)" stroke-width="4" stroke-linecap="round"/><path d="M50 44c-7-8 7-12 0-22M70 44c-7-8 7-12 0-22M90 44c-7-8 7-12 0-22" fill="none" stroke="rgba(255,255,255,.8)" stroke-width="4" stroke-linecap="round"/><path d="M96 14l24 40M106 12l22 38" stroke="rgba(255,255,255,.9)" stroke-width="4" stroke-linecap="round"/><path d="M52 104h36" stroke="rgba(255,255,255,.6)" stroke-width="4" stroke-linecap="round"/></svg></div><div><b>家常菜食譜</b><span>想做菜，看這裡</span></div><i class="go" aria-hidden="true">›</i></a>
+    <a class="m-music" href="#music"><div class="ic" aria-hidden="true"><svg viewBox="0 0 140 110" aria-hidden="true"><circle cx="56" cy="58" r="46" fill="rgba(255,255,255,.28)"/><circle cx="56" cy="58" r="34" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="2"/><circle cx="56" cy="58" r="22" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="2"/><circle cx="56" cy="58" r="12" fill="rgba(255,255,255,.85)"/><circle cx="56" cy="58" r="3" fill="#6341a3"/><path d="M104 74V26l26-8v46" fill="none" stroke="rgba(255,255,255,.9)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="96" cy="76" r="9" fill="rgba(255,255,255,.95)"/><circle cx="122" cy="66" r="9" fill="rgba(255,255,255,.95)"/></svg></div><div><b>聽歌與找歌</b><span>用歌詞找歌、找過的歌</span></div><i class="go" aria-hidden="true">›</i></a>
   </nav>
 </section>
 
@@ -386,18 +395,15 @@ details[open] summary::after { content: "收起來"; }
   })();
 
   (function () {
-    var ym = document.getElementById("cal-ym"), dd = document.getElementById("cal-d"), ww = document.getElementById("cal-w"), tt = document.getElementById("cal-t"), ft = document.getElementById("cal-foot");
-    if (!ym || !dd || !ww || !tt) return;
+    var dt = document.getElementById("when-date"), tm = document.getElementById("when-time"), gr = document.getElementById("when-greet");
+    if (!dt || !tm || !gr) return;
     function two(n) { return (n < 10 ? "0" : "") + n; }
     function tick() {
-      var n = new Date(), d = new Date(n.getTime() + (480 + n.getTimezoneOffset()) * 60000);
-      ym.textContent = d.getFullYear() + " 年 " + (d.getMonth() + 1) + " 月";
-      dd.textContent = d.getDate();
-      dd.className = d.getDay() === 0 ? "cal-day sun" : "cal-day";
-      ww.textContent = "星期" + ["日","一","二","三","四","五","六"][d.getDay()];
-      var h = d.getHours(), g = h < 5 ? "晚安" : h < 11 ? "早安" : h < 18 ? "午安" : "晚安";
-      if (ft) ft.textContent = g + "，想看什麼，點一下就好。";
-      tt.textContent = two(d.getHours()) + ":" + two(d.getMinutes()) + ":" + two(d.getSeconds());
+      var n = new Date(), d = new Date(n.getTime() + (480 + n.getTimezoneOffset()) * 60000), h = d.getHours();
+      dt.textContent = d.getFullYear() + "." + two(d.getMonth() + 1) + "." + two(d.getDate()) + "　星期" + ["日","一","二","三","四","五","六"][d.getDay()];
+      dt.className = d.getDay() === 0 ? "when-date sun" : "when-date";
+      tm.textContent = two(h) + ":" + two(d.getMinutes()) + ":" + two(d.getSeconds());
+      gr.textContent = (h < 5 ? "晚安" : h < 11 ? "早安" : h < 18 ? "午安" : "晚安") + "，想看什麼，點一下就好。";
     }
     tick();
     setInterval(tick, 1000);
