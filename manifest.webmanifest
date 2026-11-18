@@ -1,7 +1,7 @@
 {
-  "name": "我們家的首頁",
-  "short_name": "我們家",
-  "description": "全家人的新聞、股市、食譜和音樂",
+  "name": "507號",
+  "short_name": "507號",
+  "description": "507號的新聞、股市、食譜和音樂",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
