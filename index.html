@@ -51,8 +51,8 @@ em { font-style: normal; display: inline-block; font-size: 16px; color: var(--mu
 /* 首頁 */
 #home { padding-top: 0; }
 .hero { position: relative; min-height: 600px; margin: 0 -16px; padding: 64px 22px 0; overflow: hidden; }
-.hero-title { font-size: 104px; font-weight: 900; line-height: 1.1; letter-spacing: .02em; position: relative; z-index: 1; }
-.hero-sub { position: relative; z-index: 1; margin: 6px 0 0; color: var(--glow); font-size: 24px; font-weight: 700; letter-spacing: .5em; }
+.hero-title { font-size: 128px; font-weight: 900; line-height: 1.1; letter-spacing: .02em; position: relative; z-index: 1; }
+.hero-sub { position: relative; z-index: 1; margin: 6px 0 0; color: var(--glow); font-size: 24px; font-weight: 700; letter-spacing: .12em; }
 .scene { position: absolute; left: 0; right: 0; bottom: 0; width: 100%; height: auto; display: block; }
 .when { padding: 4px 0 0; }
 .when-date { font-size: 30px; font-weight: 500; letter-spacing: .08em; font-variant-numeric: tabular-nums; }
@@ -124,7 +124,7 @@ details[open] summary::after { content: "收起來"; }
 .song { display: block; text-decoration: none; background: var(--surface); color: var(--ink); border: 1px solid var(--line); border-left: 6px solid var(--accent); border-radius: 6px 16px 16px 6px; padding: 12px 20px; min-height: 80px; }
 .song b { display: block; font-size: 28px; line-height: 1.5; }
 .song span { color: var(--muted); font-size: 19px; }
-@media (max-width: 420px) { body { font-size: 19px; } h1 { font-size: 44px; } .hero-title { font-size: 92px; } .hero { padding-top: 56px; min-height: 560px; } .when-time { font-size: 50px; } .menu a b { font-size: 27px; } .menu .ic { width: 80px; height: 66px; } .lead { font-size: 20px; } summary { font-size: 24px; } }
+@media (max-width: 420px) { body { font-size: 19px; } h1 { font-size: 44px; } .hero-title { font-size: 112px; } .hero { padding-top: 56px; min-height: 560px; } .when-time { font-size: 50px; } .menu a b { font-size: 27px; } .menu .ic { width: 80px; height: 66px; } .lead { font-size: 20px; } summary { font-size: 24px; } }
 </style>
 </head>
 <body>
@@ -133,8 +133,8 @@ details[open] summary::after { content: "收起來"; }
 <!-- ========== 首頁 ========== -->
 <section id="home">
   <div class="hero">
-    <h1 class="hero-title">我們家</h1>
-    <p class="hero-sub">全家人的首頁</p>
+    <h1 class="hero-title" id="hero-greet">早安</h1>
+    <p class="hero-sub">歡迎回到我們家</p>
     <svg class="scene" viewBox="0 0 420 420" aria-hidden="true" preserveAspectRatio="xMidYMax slice">
 <defs>
 <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0c0e12" stop-opacity="0"/><stop offset=".45" stop-color="#121a26"/><stop offset=".85" stop-color="#2a2430"/></linearGradient>
@@ -403,7 +403,7 @@ details[open] summary::after { content: "收起來"; }
       dt.textContent = d.getFullYear() + "." + two(d.getMonth() + 1) + "." + two(d.getDate()) + "　星期" + ["日","一","二","三","四","五","六"][d.getDay()];
       dt.className = d.getDay() === 0 ? "when-date sun" : "when-date";
       tm.textContent = two(h) + ":" + two(d.getMinutes()) + ":" + two(d.getSeconds());
-      gr.textContent = (h < 5 ? "晚安" : h < 11 ? "早安" : h < 18 ? "午安" : "晚安") + "，想看什麼，點一下就好。";
+      var w = h < 5 ? "晚安" : h < 11 ? "早安" : h < 18 ? "午安" : "晚安"; gr.textContent = "想看什麼，點一下就好。"; var hg = document.getElementById("hero-greet"); if (hg) hg.textContent = w;
     }
     tick();
     setInterval(tick, 1000);
