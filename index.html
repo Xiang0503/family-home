@@ -51,8 +51,9 @@ em { font-style: normal; display: inline-block; font-size: 16px; color: var(--mu
 /* 首頁 */
 #home { padding-top: 0; }
 .hero { position: relative; min-height: 600px; margin: 0 -16px; padding: 64px 22px 0; overflow: hidden; }
-.hero-title { font-size: 128px; font-weight: 900; line-height: 1.1; letter-spacing: .02em; position: relative; z-index: 1; }
-.hero-sub { position: relative; z-index: 1; margin: 6px 0 0; color: var(--glow); font-size: 24px; font-weight: 700; letter-spacing: .12em; }
+.hero-title { margin-left: -4px; font-size: 128px; font-weight: 900; line-height: 1.1; letter-spacing: .02em; position: relative; z-index: 1; }
+.hero-head { display: inline-block; position: relative; z-index: 1; }
+.hero-sub { text-align-last: justify; padding-left: 0; margin-right: 0 !important; margin-left: -2px; position: relative; z-index: 1; margin: 6px 0 0; color: var(--glow); font-size: 24px; font-weight: 700; letter-spacing: .12em; }
 .scene { position: absolute; left: 0; right: 0; bottom: 0; width: 100%; height: auto; display: block; }
 .when { padding: 4px 0 0; }
 .when-date { font-size: 30px; font-weight: 500; letter-spacing: .08em; font-variant-numeric: tabular-nums; }
@@ -133,8 +134,8 @@ details[open] summary::after { content: "收起來"; }
 <!-- ========== 首頁 ========== -->
 <section id="home">
   <div class="hero">
-    <h1 class="hero-title" id="hero-greet">早安</h1>
-    <p class="hero-sub">歡迎回到我們家</p>
+    <div class="hero-head"><h1 class="hero-title" id="hero-greet">早安</h1>
+    <p class="hero-sub">歡迎回到我們家</p></div>
     <svg class="scene" viewBox="0 0 420 420" aria-hidden="true" preserveAspectRatio="xMidYMax slice">
 <defs>
 <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0c0e12" stop-opacity="0"/><stop offset=".45" stop-color="#121a26"/><stop offset=".85" stop-color="#2a2430"/></linearGradient>
