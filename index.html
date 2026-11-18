@@ -602,8 +602,9 @@ details[open] summary::after { content: "收起來"; }
       el.innerHTML = "<small>今天的天氣暫時抓不到，<a href=\"https://www.cwa.gov.tw/V8/C/\" style=\"color:var(--glow)\">點這裡看氣象署</a></small>"; el.hidden = false;
     }
     el.innerHTML = "<small>天氣載入中…</small>"; el.hidden = false;
-    var done = false, timer = setTimeout(function () { if (!done) { done = true; fallback(); } }, 8000);
-    fetch(u).then(function (r) { if (!r.ok) throw new Error("http " + r.status); return r.json(); }).then(function (j) {
+    var done = false, timer = setTimeout(function () { if (!done) { done = true; fallback(); } }, 12000);
+    function ok(r) { if (!r.ok) throw new Error("http " + r.status); return r.json(); }
+    fetch("/api/weather").then(ok).catch(function () { return fetch(u).then(ok); }).then(function (j) {
       if (done) return; done = true; clearTimeout(timer);
       show(j);
       try { localStorage.setItem(KEY, JSON.stringify({ t: Date.now(), j: j })); } catch (e) {}
