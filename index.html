@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>我們家的首頁</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+/* 設計構想：首頁是一張家裡牆上的撕頁日曆，紅色頂條、大日期、星期日轉紅；四個入口是實心色塊（新聞藍、股市琥珀、食譜綠、音樂紫），進入後頁首沿用同一個顏色。內文是平的清單，不做陰影與圓角卡片。台股慣例：紅漲綠跌 */
+:root {
+  --bg: #e9edf0;
+  --surface: #ffffff;
+  --ink: #16191f;
+  --muted: #59616e;
+  --line: #d3d9de;
+  --red: #c5281c;
+  --red-t: #c5281c;
+  --up: #c62828;
+  --down: #1b7f3b;
+  --a-news: #1b5aa6; --t-news: #1b5aa6;
+  --a-stock: #955500; --t-stock: #955500;
+  --a-recipe: #1f6e49; --t-recipe: #1f6e49;
+  --a-music: #6341a3; --t-music: #6341a3;
+  --accent: #1b5aa6;
+  --accent-t: #1b5aa6;
+  --tint: color-mix(in srgb, var(--accent) 9%, var(--surface));
+  --font-body: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #12161b; --surface: #1c2128; --ink: #eef1f5; --muted: #a9b2bf; --line: #2e353f;
+    --red-t: #ff7a6e; --up: #ff7a73; --down: #5fd488;
+    --t-news: #8dbbf5; --t-stock: #f0b95a; --t-recipe: #6fd0a0; --t-music: #bda8f2;
+    --accent-t: #8dbbf5;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #12161b; --surface: #1c2128; --ink: #eef1f5; --muted: #a9b2bf; --line: #2e353f;
+  --red-t: #ff7a6e; --up: #ff7a73; --down: #5fd488;
+  --t-news: #8dbbf5; --t-stock: #f0b95a; --t-recipe: #6fd0a0; --t-music: #bda8f2;
+  --accent-t: #8dbbf5;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body { background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 21px; line-height: 1.8; -webkit-text-size-adjust: 100%; }
+.wrap { max-width: 720px; margin: 0 auto; padding: 0 16px 64px; }
+#news { --accent: var(--a-news); --accent-t: var(--t-news); }
+#stock { --accent: var(--a-stock); --accent-t: var(--t-stock); }
+#recipe { --accent: var(--a-recipe); --accent-t: var(--t-recipe); }
+#music { --accent: var(--a-music); --accent-t: var(--t-music); }
+section[hidden] { display: none; }
+button, a { font-family: inherit; }
+a:focus-visible, button:focus-visible, summary:focus-visible, input:focus-visible { outline: 4px solid var(--accent-t); outline-offset: 3px; }
+h1 { font-size: 40px; font-weight: 900; line-height: 1.3; margin: 0; text-wrap: balance; }
+h2 { font-size: 26px; font-weight: 900; line-height: 1.4; margin: 36px 0 12px; padding-bottom: 6px; border-bottom: 3px solid var(--accent); color: var(--accent-t); }
+h2 small { font-size: 16px; color: var(--muted); font-weight: 400; margin-left: 8px; }
+.stamp { color: var(--muted); font-size: 17px; margin: 0; }
+em { font-style: normal; display: inline-block; font-size: 16px; color: var(--muted); background: var(--tint); border-radius: 999px; padding: 0 12px; margin-right: 6px; line-height: 1.6; }
+
+/* 首頁：撕頁日曆 */
+#home { padding-top: 20px; }
+#home h1 { font-size: 30px; margin-bottom: 14px; }
+.cal { position: relative; background: var(--surface); border: 1px solid var(--line); border-radius: 8px 8px 16px 16px; overflow: hidden; text-align: center; }
+.cal::before, .cal::after { content: ""; position: absolute; top: 9px; width: 14px; height: 14px; border-radius: 50%; background: var(--bg); }
+.cal::before { left: 18%; } .cal::after { right: 18%; }
+.cal-top { background: var(--red); color: #fff; font-size: 24px; font-weight: 700; letter-spacing: .06em; padding: 20px 0 10px; }
+.cal-day { font-size: 132px; font-weight: 900; line-height: 1.05; padding-top: 8px; font-variant-numeric: tabular-nums; }
+.cal-day.sun { color: var(--red-t); }
+.cal-wd { font-size: 32px; font-weight: 700; padding-bottom: 14px; }
+.cal-foot { border-top: 2px dashed var(--line); margin: 0 16px; padding: 12px 0 14px; color: var(--muted); font-size: 20px; }
+.menu { display: grid; gap: 12px; margin-top: 16px; }
+.menu a { --c: var(--a-news); display: flex; align-items: center; gap: 16px; text-decoration: none; background: var(--c); color: #fff; border-radius: 12px; padding: 14px 18px 14px 14px; min-height: 112px; }
+.menu a.m-news { --c: var(--a-news); } .menu a.m-stock { --c: var(--a-stock); } .menu a.m-recipe { --c: var(--a-recipe); } .menu a.m-music { --c: var(--a-music); }
+.menu .ic { flex: none; width: 72px; height: 72px; border-radius: 50%; display: grid; place-items: center; background: rgba(255,255,255,.18); color: #fff; }
+.menu .ic svg { width: 42px; height: 42px; }
+.menu a b { display: block; font-size: 32px; font-weight: 900; line-height: 1.35; color: #fff; }
+.menu a span { display: block; font-size: 19px; line-height: 1.5; color: rgba(255,255,255,.92); }
+.menu a::after { content: "›"; margin-left: auto; font-size: 44px; line-height: 1; color: #fff; }
+.menu a:active { filter: brightness(.9); }
+
+/* 內頁頁首 */
+.band { background: var(--accent); color: #fff; margin: 0 -16px 22px; padding: 14px 16px 18px; }
+.band .back { display: inline-flex; align-items: center; min-height: 52px; padding: 6px 20px; border-radius: 999px; background: rgba(255,255,255,.2); color: #fff; font-size: 21px; font-weight: 700; text-decoration: none; }
+.band h1 { color: #fff; margin: 12px 0 4px; }
+.band .stamp { color: rgba(255,255,255,.92); }
+.back:active, .back-bottom:active { filter: brightness(.9); }
+.back-bottom { display: block; width: 100%; text-align: center; text-decoration: none; font-size: 26px; font-weight: 700; min-height: 76px; line-height: 76px; margin-top: 36px; border-radius: 12px; background: var(--accent); color: #fff; }
+
+/* 內文 */
+.lead { background: var(--tint); border-radius: 10px; padding: 16px 20px; margin-bottom: 8px; font-size: 22px; }
+.lead b { color: var(--accent-t); }
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px; margin-bottom: 8px; }
+.stat { background: var(--surface); border-top: 5px solid var(--accent); border-radius: 4px 4px 10px 10px; padding: 10px 14px 12px; }
+.stat .k { color: var(--muted); font-size: 17px; line-height: 1.5; }
+.stat .v { font-size: 28px; font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1.3; }
+.stat .d { font-size: 18px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.dn { color: var(--down); } .upc { color: var(--up); }
+ol.story { margin: 0; padding: 0; list-style: none; }
+ol.story li { border-left: 6px solid var(--accent); padding: 8px 0 8px 16px; margin-bottom: 14px; }
+ol.story b { display: block; line-height: 1.6; margin-bottom: 2px; }
+ol.story a { color: var(--accent-t); font-weight: 700; font-size: 19px; text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 2px; }
+.links { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 10px; }
+.links a { display: block; text-decoration: none; background: var(--surface); color: var(--ink); border: 2px solid var(--accent); border-radius: 10px; padding: 10px 16px; min-height: 72px; }
+.links a b { display: block; color: var(--accent-t); font-size: 21px; line-height: 1.4; }
+.links a span { display: block; color: var(--muted); font-size: 17px; line-height: 1.4; }
+.links a:active { background: var(--tint); }
+.note { color: var(--muted); font-size: 17px; margin-top: 26px; border-top: 1px solid var(--line); padding-top: 12px; }
+.weather { background: var(--tint); border-radius: 10px; padding: 16px 20px; margin-bottom: 10px; }
+.weather b { color: var(--accent-t); }
+.weather a { color: var(--accent-t); font-weight: 700; font-size: 19px; text-underline-offset: 4px; }
+
+/* 食譜與音樂 */
+.sample { border: 2px dashed var(--line); border-radius: 10px; padding: 10px 14px; font-size: 18px; color: var(--muted); margin-bottom: 18px; }
+details { background: var(--surface); border-left: 6px solid var(--accent); border-radius: 4px 10px 10px 4px; margin-bottom: 10px; }
+summary { list-style: none; cursor: pointer; font-size: 28px; font-weight: 900; padding: 14px 18px; min-height: 72px; display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+summary::-webkit-details-marker { display: none; }
+summary::after { content: "看做法"; font-size: 19px; font-weight: 500; color: #fff; background: var(--accent); border-radius: 999px; padding: 2px 16px; flex: none; }
+details[open] summary::after { content: "收起來"; }
+.rbody { padding: 0 20px 18px; }
+.rbody h3 { font-size: 22px; color: var(--accent-t); margin: 14px 0 4px; }
+.rbody ul, .rbody ol { margin: 0; padding-left: 1.3em; }
+.todo { color: var(--muted); }
+.finder { background: var(--surface); border: 2px solid var(--accent); border-radius: 10px; padding: 16px 18px; }
+.finder label { display: block; margin-bottom: 8px; }
+.finder input { display: block; width: 100%; font-size: 24px; min-height: 64px; padding: 8px 16px; margin-bottom: 12px; border: 2px solid var(--line); border-radius: 10px; background: var(--bg); color: var(--ink); font-family: inherit; }
+.hrow { display: flex; gap: 10px; align-items: stretch; }
+.hrow .song { flex: 1; }
+.hrow .del { flex: none; min-width: 72px; font-size: 20px; font-weight: 700; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); color: var(--muted); }
+.clear { font-size: 20px; min-height: 56px; padding: 8px 22px; margin-top: 12px; border: 1px solid var(--line); border-radius: 999px; background: var(--surface); color: var(--muted); }
+.songs { display: grid; gap: 10px; }
+.song { display: block; text-decoration: none; background: var(--surface); color: var(--ink); border-left: 8px solid var(--accent); border-radius: 4px 10px 10px 4px; padding: 12px 20px; min-height: 80px; }
+.song b { display: block; font-size: 28px; line-height: 1.5; }
+.song span { color: var(--muted); font-size: 19px; }
+@media (max-width: 420px) { body { font-size: 19px; } h1 { font-size: 34px; } #home h1 { font-size: 28px; } .cal-day { font-size: 112px; } .menu a b { font-size: 29px; } .menu .ic { width: 64px; height: 64px; } .menu .ic svg { width: 38px; height: 38px; } .lead { font-size: 20px; } summary { font-size: 24px; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- ========== 首頁 ========== -->
+<section id="home">
+  <h1>我們家的首頁</h1>
+  <div class="cal" aria-label="今天的日期">
+    <div class="cal-top" id="cal-ym">2026 年 11 月</div>
+    <div class="cal-day" id="cal-d">18</div>
+    <div class="cal-wd" id="cal-w">星期三</div>
+    <div class="cal-foot">想看什麼，點一下就好。</div>
+  </div>
+  <nav class="menu" aria-label="主選單">
+    <a class="m-news" href="#news"><div class="ic" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="8" width="30" height="32" rx="3"/><path d="M36 16h6v20a4 4 0 0 1-4 4H12"/><path d="M12 16h18M12 23h18M12 30h10"/></svg></div><div><b>今日新聞</b><span>台灣、國際、天氣</span></div></a>
+    <a class="m-stock" href="#stock"><div class="ic" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8v34h36"/><path d="M12 32l9-10 7 6 12-15"/><path d="M33 13h7v7"/></svg></div><div><b>股市摘要</b><span>今天股市發生什麼事</span></div></a>
+    <a class="m-recipe" href="#recipe"><div class="ic" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M6 22h36a0 0 0 0 1 0 0c0 10-7 16-18 16S6 32 6 22z"/><path d="M17 8c-2 3 2 4 0 8M25 8c-2 3 2 4 0 8M33 8c-2 3 2 4 0 8"/><path d="M14 42h20"/></svg></div><div><b>家常菜食譜</b><span>想做菜，看這裡</span></div></a>
+    <a class="m-music" href="#music"><div class="ic" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 36V10l22-4v26"/><circle cx="12" cy="36" r="6"/><circle cx="34" cy="32" r="6"/><path d="M18 18l22-4"/></svg></div><div><b>聽歌與找歌</b><span>用歌詞找歌、找過的歌</span></div></a>
+  </nav>
+</section>
+
+<!-- ========== 今日新聞（每日自動更新區塊） ========== -->
+<section id="news" hidden>
+  <header class="band">
+    <a class="back" href="#home">← 回首頁</a>
+    <h1>今日新聞</h1>
+    <p class="stamp" id="news-stamp">最後更新：2026/11/18（三）01:20:00。內容為 11/17（二）的新聞。</p>
+  </header>
+
+  <div class="lead"><b>今天重點：</b>台股連兩天大跌。立法院討論普發現金 2 萬元，朝野沒有共識。美、中、俄三國領袖預計 19 日在深圳會面。北部這幾天轉濕冷。每一則後面的「出處」，都會直接帶你到我查到資料的那篇報導。</div>
+
+  <h2>今天的天氣</h2>
+  <div class="weather"><b>這兩天變冷，記得穿外套。</b>18 日下午鋒面過境，氣溫下降；19、20 日東北季風來襲，各地明顯轉涼，清晨平地低溫約 11 度、台北約 15 度。19 日北部和東半部有局部短暫雨，20 日花東與南部山區偶有短暫雨。21 到 23 日氣溫慢慢回升，但清晨還是偏涼。<a href="https://www.cna.com.tw/news/ahel/202611170015.aspx" target="_blank" rel="noopener">出處：中央社（11/17）</a></div>
+  <div class="links" style="margin-bottom:6px"><a href="https://www.cwa.gov.tw/" target="_blank" rel="noopener"><b>中央氣象署</b><span>最新天氣預報與雨量</span></a></div>
+
+  <h2>台灣</h2>
+  <ol class="story">
+    <li><b>普發現金 2 萬元，朝野沒談攏（11/17）</b>立法院財政委員會協商國民黨團提的特別條例草案，朝野沒有共識，要送到院會再協商。總統賴清德 8 月宣布明年普發 1 萬元，國民黨團後來提案加碼到 2 萬元。<a href="https://ctee.com.tw/news/20261117701415-430101" target="_blank" rel="noopener">出處：工商時報（中央社）</a></li>
+    <li><b>台股重挫，險守 4 萬點（11/17）</b>加權指數收盤跌 948 點，收在 40,092 點，成交金額約 9,618 億元。台積電跌 45 元，收 2,170 元。詳情請看「股市摘要」。<a href="https://finance.ettoday.net/news/3273642" target="_blank" rel="noopener">出處：ETtoday</a></li>
+    <li><b>中科園區發生工安意外（11/16）</b>有 1 人死亡，園區管理局說會加強工程安全措施。<a href="https://www.cna.com.tw/news/aloc/202611160266.aspx" target="_blank" rel="noopener">出處：中央社</a></li>
+    <li><b>前美國在台協會處長：140 億美元對台軍售最終可望通過（11/17）</b>酈英傑預估這筆軍售今年底前不會完成，但最後可望通過，可能拆成多筆個別通知。他也認為台灣有能力辦好九合一選舉，並希望川習會不要以台灣為主要議題。<a href="https://www.cna.com.tw/news/aipl/202611170014.aspx" target="_blank" rel="noopener">出處：中央社</a></li>
+    <li><b>台東里長候選人涉賄選被起訴（11/17）</b>台東地檢署指出，關山鎮一名里長候選人今年 6 月買了 40 盒端午禮盒，與友人送給有投票權的選民，禮品價值遠超法定上限，兩人都被起訴。<a href="https://www.chinatimes.com/realtimenews/20261117002391-260402" target="_blank" rel="noopener">出處：中時新聞網</a></li>
+    <li><b>蘭嶼椰油聚會所啟用（11/17）</b>這座聚會所停工延宕了 10 年，終於正式啟用。<a href="https://www.chinatimes.com/realtimenews/20261117002204-260405" target="_blank" rel="noopener">出處：中時新聞網</a></li>
+    <li><b>無人載具海測場域開放（11/17）</b><em>只看到標題，詳情請點出處。</em>標題寫著，三大無人載具海測場域開放，加速驗證國防自主打造的海上戰力。<a href="https://www.chinatimes.com/realtimenews/20261117002284-260417" target="_blank" rel="noopener">出處：中時新聞網</a></li>
+    <li><b>「海貢獎」表揚第一線人員（11/17）</b><em>只看到標題，詳情請點出處。</em>標題寫著，釣魚人、海巡查緝員等 10 組人獲獎。<a href="https://www.chinatimes.com/realtimenews/20261117002270-260405" target="_blank" rel="noopener">出處：中時新聞網</a></li>
+    <li><b>中山大學研究：大地震週期可能算錯（11/17）</b><em>只看到標題，詳情請點出處。</em>標題寫著，研究分析深海沉積物，發現古地震有「時間差」。<a href="https://www.chinatimes.com/realtimenews/20261117002234-260405" target="_blank" rel="noopener">出處：中時新聞網</a></li>
+    <li><b>台灣茶連 3 年奪國際茶賽大獎（11/18 凌晨列表）</b><em>只看到標題，詳情請點出處。</em><a href="https://www.setn.com/news/1940521" target="_blank" rel="noopener">出處：三立新聞網</a></li>
+    <li><b>賴總統專機飛越許可遭撤（11/18 凌晨列表）</b><em>只看到標題，詳情請點出處。</em>標題寫著，華府促請國際民航組織（ICAO）表達反對。<a href="https://www.setn.com/news/1940450" target="_blank" rel="noopener">出處：三立新聞網</a></li>
+  </ol>
+
+  <h2>國際</h2>
+  <ol class="story">
+    <li><b>美中俄三國領袖要見面（11/16 報導）</b>19 日在中國深圳舉行，是三國領袖史上第一次面對面會談。中國外交部說這次會談具開創性意義，會談內容包括維護世界和平與大國之間的戰略穩定。<a href="https://www.cna.com.tw/news/acn/202611160163.aspx" target="_blank" rel="noopener">出處：中央社</a></li>
+    <li><b>美國擴大先進晶片出口管制（11/17）</b>美國商務部的新規定，讓印尼、馬來西亞、新加坡、泰國和巴西境內轉移先進晶片，都必須先拿到許可證。新加坡政府說正在研究規定，並和美方溝通。<a href="https://www.cna.com.tw/news/aopl/202611170080.aspx" target="_blank" rel="noopener">出處：中央社</a></li>
+    <li><b>日本抗議俄羅斯軍機侵犯領空（11/17）</b>日本說有 2 架疑似俄羅斯的飛機飛進領空，自衛隊緊急派戰機警告，並向莫斯科提出嚴正抗議。<a href="https://udn.com/news/story/6809/9883255" target="_blank" rel="noopener">出處：聯合新聞網</a></li>
+    <li><b>俄軍夜襲烏克蘭跨河大橋（11/17）</b>基輔多次傳出爆炸聲。<a href="https://www.cna.com.tw/news/aopl/202611170017.aspx" target="_blank" rel="noopener">出處：中央社</a></li>
+    <li><b>輝達董事會還沒討論讓黃仁勳回任（11/17）</b>美媒引述消息人士說，董事會目前專注調查，尚未討論他回任。他因多起婚外情指控辭去執行長等職務，已有逾 18 萬人連署支持他回鍋，目前由財務長暫代。中時新聞網當天也有相關報導。<a href="https://www.cna.com.tw/news/aopl/202611170006.aspx" target="_blank" rel="noopener">出處：中央社</a></li>
+    <li><b>美國多家大銀行 App 一度當機（11/17）</b>美國銀行、摩根大通、富國銀行等的 App 與網站傳出中斷。摩根大通說是軟體漏洞，目前沒有證據和駭客攻擊有關，並說當天會全面恢復。<a href="https://www.cna.com.tw/news/aopl/202611170019.aspx" target="_blank" rel="noopener">出處：中央社</a></li>
+    <li><b>英日在北海道軍演（11/17）</b>年度「警戒島嶼」演習 7 日到 22 日舉行，雙方交流烏克蘭戰場經驗，包含無人系統的運用。<a href="https://www.cna.com.tw/news/aopl/202611170016.aspx" target="_blank" rel="noopener">出處：中央社</a></li>
+    <li><b>澤倫斯基：北韓供俄國更多彈道飛彈（11/17）</b><em>只看到標題，詳情請點出處。</em>標題寫著，他希望歐洲盟邦伸出援手。<a href="https://www.cna.com.tw/news/aopl/202611170007.aspx" target="_blank" rel="noopener">出處：中央社</a></li>
+    <li><b>歐盟擴大施壓、持續挺烏克蘭（11/17）</b><em>只看到標題，詳情請點出處。</em>標題寫著，歐盟指俄羅斯無意為和平做準備。<a href="https://www.cna.com.tw/news/aopl/202611170012.aspx" target="_blank" rel="noopener">出處：中央社</a></li>
+    <li><b>重慶熊貓寶寶「莽小六」百天亮相（11/17）</b><em>只看到標題，詳情請點出處。</em><a href="https://www.chinatimes.com/realtimenews/20261117000006-260409" target="_blank" rel="noopener">出處：中時新聞網</a></li>
+    <li><b>歐洲 5 國想在非洲設遣返中心（11/17）</b>奧地利、丹麥、德國、希臘、荷蘭正研究在盧安達設立第一個歐洲境外的遣返中心，希望 2027 年前談成，開始送走被拒絕庇護的人。<a href="https://aa.com.tr/en/world/morning-briefing-nov-17-2026/4127219" target="_blank" rel="noopener">出處：Anadolu 英文晨間簡報</a></li>
+    <li><b>捷克首都布拉格出現大示威（11/15）</b>媒體估計有 35 萬到 40 萬人上街，抗議政府對公共媒體的經費計畫，擔心影響媒體獨立。<a href="https://www.euronews.com/2026/11/15/hundreds-of-thousands-in-prague-protest-czech-governments-public-media-funding-plans" target="_blank" rel="noopener">出處：Euronews 英文報導</a></li>
+    <li><b>歐洲央行與美國聯準會警告 AI 風險（11/17）</b>官員提醒，AI 快速擴張可能透過網路攻擊、操縱市場、交易方向太一致等方式，威脅金融穩定。<a href="https://aa.com.tr/en/world/morning-briefing-nov-17-2026/4127219" target="_blank" rel="noopener">出處：Anadolu 英文晨間簡報</a></li>
+  </ol>
+
+  <h2>想看更多，這些新聞網站</h2>
+  <div class="links">
+    <a href="https://www.cna.com.tw/list/aall.aspx" target="_blank" rel="noopener"><b>中央社 即時新聞</b><span>全部最新消息</span></a>
+    <a href="https://udn.com/news/cate/2/6638" target="_blank" rel="noopener"><b>聯合新聞網 要聞</b><span>重要新聞整理</span></a>
+    <a href="https://www.chinatimes.com/realtimenews/" target="_blank" rel="noopener"><b>中時新聞網 即時</b><span>政治、社會、生活</span></a>
+    <a href="https://www.cna.com.tw/list/aopl.aspx" target="_blank" rel="noopener"><b>中央社 國際新聞</b><span>世界發生的事</span></a>
+  </div>
+  <p class="note">新聞由公開報導整理，用自己的話改寫，每一則都附上我查到資料的那篇報導。英文報導的內容是我翻成中文的。這一頁是整理當下的快照，更新時間以頁首為準。</p>
+  <a class="back-bottom" href="#home">← 回首頁</a>
+</section>
+
+<!-- ========== 股市摘要（每日自動更新區塊） ========== -->
+<section id="stock" hidden>
+  <header class="band">
+    <a class="back" href="#home">← 回首頁</a>
+    <h1>股市摘要</h1>
+    <p class="stamp" id="stock-stamp">最後更新：2026/11/18（三）01:20:00。台股為 11/17 收盤，美股為 11/16 收盤。</p>
+  </header>
+
+  <div class="lead"><b>一句話重點：</b>台股連續兩天大跌，兩天共跌 3,583 點。11/17 盤中一度跌破 4 萬點，最後勉強收回。原因是市場擔心 AI 相關需求，賣壓從美國一路傳到台灣。今天最關鍵的事是輝達的財報。</div>
+
+  <h2>台股 <small>11/17（二）收盤</small></h2>
+  <div class="stats">
+    <div class="stat"><div class="k">加權指數</div><div class="v">40,092.11</div><div class="d dn">▼ 947.97（−2.31%）</div></div>
+    <div class="stat"><div class="k">成交金額</div><div class="v">約 9,618 億</div><div class="d">單日量很大</div></div>
+    <div class="stat"><div class="k">台積電</div><div class="v">2,170 元</div><div class="d dn">▼ 45 元（−2.03%）</div></div>
+    <div class="stat"><div class="k">上漲／下跌家數</div><div class="v">186／662</div><div class="d">約七成以上下跌</div></div>
+    <div class="stat"><div class="k">0050 元大台灣50</div><div class="v">94.00 元</div><div class="d dn">▼ 2.45 元（−2.54%）</div></div>
+    <div class="stat"><div class="k">00919 群益台灣精選高息</div><div class="v">30.39 元</div><div class="d dn">▼ 0.11 元（−0.36%）</div></div>
+  </div>
+  <p class="note" style="margin-top:12px;border-top:0;padding-top:0">0050 連跌兩天，共跌約 8.29%，外資兩天賣超約 16.7 萬張。<a href="https://setn.com/news/1940458" target="_blank" rel="noopener">出處：三立新聞網</a>　價格出處：<a href="https://tw.stock.yahoo.com/quote/0050.TW" target="_blank" rel="noopener">Yahoo 0050</a>、<a href="https://www.wantgoo.com/stock/etf/00919" target="_blank" rel="noopener">玩股網 00919</a>、<a href="https://www.cmoney.tw/forum/stock/00919" target="_blank" rel="noopener">CMoney 00919</a></p>
+
+  <h2>今天發生什麼事</h2>
+  <ol class="story">
+    <li><b>前一天先崩了一次</b>11/16 加權指數一天跌 2,635 點，跌幅 6.03%，是史上第二大的收盤跌點，收在 41,040 點。<a href="https://vocus.cc/article/6afb9db3fd897800017da7bd" target="_blank" rel="noopener">出處：盤前報告</a></li>
+    <li><b>11/17 一開盤就急殺</b>開盤不到 3 分鐘就下殺約 1,254 點，之後低檔買盤進場，約 12 分鐘就翻紅。全天最高約 41,534 點，最低 39,786 點，上下震盪將近 1,750 點，最後收在 40,092 點。<a href="https://finance.ettoday.net/news/3273642" target="_blank" rel="noopener">出處：ETtoday</a> <a href="https://www.pocket.tw/school/articles/article-mwkcrh9n/" target="_blank" rel="noopener">出處：Pocket 收盤整理</a></li>
+    <li><b>誰跌最慘</b>生產 ABF 載板的族群多檔跌停。櫃買指數跌近 4%，比加權指數更慘。<a href="https://www.pocket.tw/school/articles/article-mwkcrh9n/" target="_blank" rel="noopener">出處：Pocket 收盤整理</a></li>
+    <li><b>央行總裁說這是短期亂流（11/17）</b><em>只看到標題，詳情請點出處。</em>中央社的標題寫著，楊金龍把黃仁勳事件形容為短期亂流。<a href="https://www.cna.com.tw/news/ahel/202611175001.aspx" target="_blank" rel="noopener">出處：中央社</a></li>
+    <li><b>台積電撐住了大盤</b>台積電跌 2.03%，收 2,170 元。最後一筆有 6,801 張的成交把價格拉了一點上來。因為它占指數比重大，守住它，大盤就比較不會失守 4 萬點。<a href="https://finance.ettoday.net/news/3273642" target="_blank" rel="noopener">出處：ETtoday</a></li>
+  </ol>
+
+  <h2>美股 <small>11/16（一）收盤</small></h2>
+  <div class="stats">
+    <div class="stat"><div class="k">道瓊</div><div class="v">51,608.17</div><div class="d dn">▼ 1.41%</div></div>
+    <div class="stat"><div class="k">標普 500</div><div class="v">7,416.59</div><div class="d dn">▼ 1.92%</div></div>
+    <div class="stat"><div class="k">那斯達克</div><div class="v">24,509.76</div><div class="d dn">▼ 2.49%</div></div>
+    <div class="stat"><div class="k">輝達</div><div class="v">156.14 美元</div><div class="d dn">▼ 4.12%</div></div>
+  </div>
+  <ol class="story" style="margin-top:12px">
+    <li><b>半導體被大賣</b>費城半導體指數一天跌超過 5%。安謀跌超過 8%，英特爾跌超過 7%，台積電 ADR 跌超過 6%，美光與 SK 海力士等記憶體股跌超過 7%。輝達收盤價是 2025 年 7 月以來最低。<a href="https://www.21jingji.com/article/20261117/herald/c90dbc037750c058ad67e0387ccbc86b.html" target="_blank" rel="noopener">出處：21 經濟網（簡體中文）</a> <a href="https://www.21jingji.com/article/20261117/herald/6043a7fee582ffac3f13238345139f1c.html" target="_blank" rel="noopener">出處：中國基金報（簡體中文）</a></li>
+    <li><b>賣壓擴散</b>標普 500 的 11 個類股裡有 9 個下跌，科技與通訊服務跌最多。只有必需消費品與公用事業小漲。恐慌指數 VIX 升到 22.91，是 11/9 以來最高。<a href="https://www.wenweipo.com/a/202611/17/AP6afb9d32e4b028ec01943bc8.html" target="_blank" rel="noopener">出處：香港文匯報</a> <a href="https://k.sina.com.cn/article_7857201856_1d45362c001908v4mq.html" target="_blank" rel="noopener">出處：新浪新聞（簡體中文）</a></li>
+    <li><b>11/17 的美股還在交易</b>截至台灣時間 23:48，道瓊盤中再跌約 1.35%，半導體股賣壓仍在。最終收盤要等台灣今天早上才知道。<a href="https://uanalyze.com.tw/articles/6015059900" target="_blank" rel="noopener">出處：優分析</a></li>
+  </ol>
+
+  <h2>接下來要看什麼</h2>
+  <ol class="story">
+    <li><b>輝達財報</b>美國時間 11/17（二）盤後公布，也就是台灣今天早上。市場分析認為，目前情緒很脆弱，就算數字符合預期，股價也不一定反彈。比較關鍵的是公司對未來需求和利潤的說法。<a href="https://www.21jingji.com/article/20261117/herald/6043a7fee582ffac3f13238345139f1c.html" target="_blank" rel="noopener">出處：中國基金報（簡體中文）</a></li>
+    <li><b>今天台股開盤</b>先看美股昨夜收盤，以及台積電 ADR 的表現，再看台積電能不能再度撐住 4 萬點關卡。</li>
+  </ol>
+
+  <h2>想看詳細，點這裡</h2>
+  <div class="links">
+    <a href="https://tw.stock.yahoo.com/quote/%5ETWII/technical-analysis" target="_blank" rel="noopener"><b>Yahoo 股市：加權指數</b><span>即時點位與技術分析</span></a>
+    <a href="https://invest.cnyes.com/INDEX/TWS/TSE01" target="_blank" rel="noopener"><b>鉅亨網：加權指數</b><span>盤勢與頭條新聞</span></a>
+    <a href="https://money.udn.com/money/story/5607/9883924" target="_blank" rel="noopener"><b>經濟日報：11/17 收盤報導</b><span>盤中高低點與台積電行情</span></a>
+    <a href="https://finance.ettoday.net/news/3273642" target="_blank" rel="noopener"><b>ETtoday：台股 40K 險守</b><span>當天開盤到收盤的過程</span></a>
+    <a href="https://uanalyze.com.tw/articles/6015059900" target="_blank" rel="noopener"><b>優分析：美股盤中報導</b><span>輝達財報前的半導體賣壓</span></a>
+    <a href="https://www.twse.com.tw/zh/" target="_blank" rel="noopener"><b>臺灣證券交易所</b><span>官方公告與三大法人買賣超</span></a>
+  </div>
+  <p class="note">以上是依公開新聞整理的當日資訊，不是買賣建議。每一段後面的「出處」是我查到資料的那篇報導，簡體中文來源的內容是我改寫成繁體中文的。數字以各網站公布為準。這頁是整理當下的快照，更新時間以頁首為準。</p>
+  <a class="back-bottom" href="#home">← 回首頁</a>
+</section>
+
+<!-- ========== 廚房與音樂 ========== -->
+<section id="recipe" hidden>
+  <header class="band">
+    <a class="back" href="#home">← 回首頁</a>
+    <h1>家常菜食譜</h1>
+    <p class="stamp">點菜名，就會展開做法。</p>
+  </header>
+  <div class="sample">目前是範例，請家人看看，喜歡哪些、少了哪些，再換成真正的。</div>
+
+  <details>
+    <summary>滷肉飯</summary>
+    <div class="rbody">
+      <h3>材料（範例）</h3>
+      <ul><li>五花肉</li><li>紅蔥頭</li><li>醬油、冰糖</li><li>米酒、水</li></ul>
+      <h3>做法（範例）</h3>
+      <ol><li>五花肉切小條，紅蔥頭炒香。</li><li>放入肉炒到出油。</li><li>加醬油、冰糖、米酒和水。</li><li>小火慢滷，直到肉軟。</li></ol>
+      <p class="todo">份量與火候，等家人補上。</p>
+    </div>
+  </details>
+  <details><summary>蘿蔔糕</summary><div class="rbody"><p class="todo">做法等家人補上。</p></div></details>
+  <details><summary>麻油雞</summary><div class="rbody"><p class="todo">做法等家人補上。</p></div></details>
+  <details><summary>油飯</summary><div class="rbody"><p class="todo">做法等家人補上。</p></div></details>
+  <details><summary>豬腳麵線</summary><div class="rbody"><p class="todo">做法等家人補上。</p></div></details>
+  <a class="back-bottom" href="#home">← 回首頁</a>
+</section>
+
+<section id="music" hidden>
+  <header class="band">
+    <a class="back" href="#home">← 回首頁</a>
+    <h1>聽歌與找歌</h1>
+    <p class="stamp">想聽歌就點一下，也可以用歌詞找歌。</p>
+  </header>
+
+  <h2>記得歌詞，不知道歌名？</h2>
+  <form class="finder" id="finder" onsubmit="return false">
+    <label for="lyric">把記得的幾句歌詞打在下面：</label>
+    <input id="lyric" type="text" placeholder="例如：月亮代表我的心" autocomplete="off" enterkeyhint="search">
+    <div class="links">
+      <a id="f-google" href="#music" target="_blank" rel="noopener"><b>用 Google 找歌名</b><span>會搜尋「歌詞＋歌名」</span></a>
+      <a id="f-yt" href="#music" target="_blank" rel="noopener"><b>用 YouTube 找</b><span>直接找可以聽的影片</span></a>
+    </div>
+  </form>
+  <p class="note">這是幫你打開搜尋結果，不是在本頁直接顯示歌名。歌詞打得越完整，越容易找到。</p>
+
+  <h2>找過的歌</h2>
+  <p class="note" id="hist-empty">還沒有找過的歌。上面搜尋之後，會自動記在這裡。</p>
+  <div class="songs" id="hist"></div>
+  <p class="note" id="hist-note" hidden>點歌名會再打開 YouTube。這份紀錄只存在這支手機（或這個瀏覽器），換手機或清除瀏覽資料就會不見。</p>
+  <button type="button" class="clear" id="hist-clear" hidden>清除全部紀錄</button>
+
+  <a class="back-bottom" href="#home">← 回首頁</a>
+</section>
+
+</div>
+<script>
+(function () {
+  var views = ["home", "news", "stock", "recipe", "music"];
+  function show() {
+    var v = location.hash.slice(1);
+    if (views.indexOf(v) < 0) v = "home";
+    views.forEach(function (n) { document.getElementById(n).hidden = (n !== v); });
+    try { window.scrollTo(0, 0); } catch (e) {}
+  }
+  window.addEventListener("hashchange", show);
+  show();
+})();
+
+  (function () {
+    var inp = document.getElementById("lyric"), g = document.getElementById("f-google"), y = document.getElementById("f-yt");
+    function upd() {
+      var q = encodeURIComponent(inp.value.trim());
+      g.href = "https://www.google.com/search?q=" + q + "%20%E6%AD%8C%E8%A9%9E%20%E6%AD%8C%E5%90%8D";
+      y.href = "https://www.youtube.com/results?search_query=" + q;
+    }
+    var KEY = "familyMusicHistory", box = document.getElementById("hist"), empty = document.getElementById("hist-empty"), hnote = document.getElementById("hist-note"), clr = document.getElementById("hist-clear");
+    function load() { try { var a = JSON.parse(localStorage.getItem(KEY) || "[]"); return Array.isArray(a) ? a : []; } catch (e) { return mem; } }
+    var mem = [];
+    function save(a) { mem = a; try { localStorage.setItem(KEY, JSON.stringify(a)); } catch (e) {} }
+    function render() {
+      var a = load(); box.innerHTML = "";
+      a.forEach(function (q, i) {
+        var row = document.createElement("div"); row.className = "hrow";
+        var l = document.createElement("a"); l.className = "song"; l.target = "_blank"; l.rel = "noopener";
+        l.href = "https://www.youtube.com/results?search_query=" + encodeURIComponent(q);
+        var b = document.createElement("b"); b.textContent = q; l.appendChild(b);
+        var d = document.createElement("button"); d.type = "button"; d.className = "del"; d.textContent = "刪除"; d.setAttribute("aria-label", "刪除 " + q);
+        d.addEventListener("click", function () { var x = load(); x.splice(i, 1); save(x); render(); });
+        row.appendChild(l); row.appendChild(d); box.appendChild(row);
+      });
+      empty.hidden = a.length > 0; hnote.hidden = clr.hidden = a.length === 0;
+    }
+    function remember() { var q = inp.value.trim(); if (!q) return; var x = load().filter(function (t) { return t !== q; }); x.unshift(q); save(x.slice(0, 30)); render(); }
+    function guard(e) { if (!inp.value.trim()) { e.preventDefault(); inp.focus(); } else { remember(); } }
+    clr.addEventListener("click", function () { save([]); render(); });
+    render();
+    inp.addEventListener("input", upd); g.addEventListener("click", guard); y.addEventListener("click", guard); upd();
+  })();
+
+  (function () {
+    var d = new Date();
+    var ym = document.getElementById("cal-ym"), dd = document.getElementById("cal-d"), ww = document.getElementById("cal-w");
+    if (!ym || !dd || !ww) return;
+    ym.textContent = d.getFullYear() + " 年 " + (d.getMonth() + 1) + " 月";
+    dd.textContent = d.getDate();
+    ww.textContent = "星期" + ["日","一","二","三","四","五","六"][d.getDay()];
+    if (d.getDay() === 0) dd.className = "cal-day sun";
+  })();
+</script>
+</body>
+</html>
