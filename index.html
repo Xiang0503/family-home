@@ -72,6 +72,7 @@ em { font-style: normal; display: inline-block; font-size: 16px; color: var(--mu
 .cal-day { font-size: 132px; font-weight: 900; line-height: 1.05; padding-top: 8px; font-variant-numeric: tabular-nums; }
 .cal-day.sun { color: var(--red-t); }
 .cal-wd { font-size: 32px; font-weight: 700; padding-bottom: 14px; }
+.cal-time { font-size: 46px; font-weight: 700; font-variant-numeric: tabular-nums; letter-spacing: .04em; line-height: 1.2; padding-bottom: 14px; }
 .cal-foot { border-top: 2px dashed var(--line); margin: 0 16px; padding: 12px 0 14px; color: var(--muted); font-size: 20px; }
 .menu { display: grid; gap: 12px; margin-top: 16px; }
 .menu a { --c: var(--a-news); display: flex; align-items: center; gap: 16px; text-decoration: none; background: var(--c); color: #fff; border-radius: 12px; padding: 14px 18px 14px 14px; min-height: 112px; }
@@ -136,7 +137,7 @@ details[open] summary::after { content: "收起來"; }
 .song { display: block; text-decoration: none; background: var(--surface); color: var(--ink); border-left: 8px solid var(--accent); border-radius: 4px 10px 10px 4px; padding: 12px 20px; min-height: 80px; }
 .song b { display: block; font-size: 28px; line-height: 1.5; }
 .song span { color: var(--muted); font-size: 19px; }
-@media (max-width: 420px) { body { font-size: 19px; } h1 { font-size: 34px; } #home h1 { font-size: 28px; } .cal-day { font-size: 112px; } .menu a b { font-size: 29px; } .menu .ic { width: 64px; height: 64px; } .menu .ic svg { width: 38px; height: 38px; } .lead { font-size: 20px; } summary { font-size: 24px; } }
+@media (max-width: 420px) { body { font-size: 19px; } h1 { font-size: 34px; } #home h1 { font-size: 28px; } .cal-day { font-size: 112px; } .cal-time { font-size: 40px; } .menu a b { font-size: 29px; } .menu .ic { width: 64px; height: 64px; } .menu .ic svg { width: 38px; height: 38px; } .lead { font-size: 20px; } summary { font-size: 24px; } }
 </style>
 </head>
 <body>
@@ -149,6 +150,7 @@ details[open] summary::after { content: "收起來"; }
     <div class="cal-top" id="cal-ym">2026 年 11 月</div>
     <div class="cal-day" id="cal-d">18</div>
     <div class="cal-wd" id="cal-w">星期三</div>
+    <div class="cal-time" id="cal-t" aria-hidden="true">09:50:00</div>
     <div class="cal-foot">想看什麼，點一下就好。</div>
   </div>
   <nav class="menu" aria-label="主選單">
@@ -377,13 +379,19 @@ details[open] summary::after { content: "收起來"; }
   })();
 
   (function () {
-    var d = new Date();
-    var ym = document.getElementById("cal-ym"), dd = document.getElementById("cal-d"), ww = document.getElementById("cal-w");
-    if (!ym || !dd || !ww) return;
-    ym.textContent = d.getFullYear() + " 年 " + (d.getMonth() + 1) + " 月";
-    dd.textContent = d.getDate();
-    ww.textContent = "星期" + ["日","一","二","三","四","五","六"][d.getDay()];
-    if (d.getDay() === 0) dd.className = "cal-day sun";
+    var ym = document.getElementById("cal-ym"), dd = document.getElementById("cal-d"), ww = document.getElementById("cal-w"), tt = document.getElementById("cal-t");
+    if (!ym || !dd || !ww || !tt) return;
+    function two(n) { return (n < 10 ? "0" : "") + n; }
+    function tick() {
+      var n = new Date(), d = new Date(n.getTime() + (480 + n.getTimezoneOffset()) * 60000);
+      ym.textContent = d.getFullYear() + " 年 " + (d.getMonth() + 1) + " 月";
+      dd.textContent = d.getDate();
+      dd.className = d.getDay() === 0 ? "cal-day sun" : "cal-day";
+      ww.textContent = "星期" + ["日","一","二","三","四","五","六"][d.getDay()];
+      tt.textContent = two(d.getHours()) + ":" + two(d.getMinutes()) + ":" + two(d.getSeconds());
+    }
+    tick();
+    setInterval(tick, 1000);
   })();
 </script>
 </body>
