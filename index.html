@@ -187,7 +187,7 @@ details[open] summary::after { content: "收起來"; }
 
 <!-- ========== 首頁 ========== -->
 <section id="home">
-  <div class="fs" id="fs" role="group" aria-label="字的大小"><button type="button" data-i="0">小</button><button type="button" data-i="1">標準</button><button type="button" data-i="2">大</button><button type="button" data-i="3">特大</button></div>
+  <div class="fs" id="fs" role="group" aria-label="字的大小"><button type="button" data-i="0">標準</button><button type="button" data-i="1">大</button><button type="button" data-i="2">特大</button></div>
   <div class="hero">
     <div class="hero-head"><h1 class="hero-title" id="hero-greet">早安</h1>
     <p class="hero-sub">歡迎回到我們家</p></div>
@@ -470,12 +470,12 @@ details[open] summary::after { content: "收起來"; }
 
   (function () {
     var box = document.getElementById("fs"); if (!box) return;
-    var sc = [0.88, 1, 1.15, 1.3], i = 1, bs = box.querySelectorAll("button");
-    try { i = parseInt(localStorage.getItem("familyFs2") || "1", 10); } catch (e) {}
-    if (!(i >= 0 && i <= 3)) i = 1;
+    var sc = [0.88, 1, 1.15], i = 1, bs = box.querySelectorAll("button");
+    try { i = parseInt(localStorage.getItem("familyFs3") || "1", 10); } catch (e) {}
+    if (!(i >= 0 && i <= 2)) i = 1;
     function apply() { document.documentElement.style.zoom = sc[i]; for (var k = 0; k < bs.length; k++) bs[k].setAttribute("aria-pressed", k === i ? "true" : "false"); }
     apply();
-    for (var k = 0; k < bs.length; k++) bs[k].addEventListener("click", function () { i = +this.getAttribute("data-i"); try { localStorage.setItem("familyFs2", i); } catch (e) {} apply(); });
+    for (var k = 0; k < bs.length; k++) bs[k].addEventListener("click", function () { i = +this.getAttribute("data-i"); try { localStorage.setItem("familyFs3", i); } catch (e) {} apply(); });
   })();
   (function () {
     var hero = document.querySelector(".hero"); if (!hero) return;
