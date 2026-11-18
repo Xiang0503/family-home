@@ -155,6 +155,30 @@ details[open] summary::after { content: "收起來"; }
 .fs button[aria-pressed="true"] { background: var(--glow); color: #0c0e12; }
 .weather-now { margin-top: 6px; font-size: 22px; font-weight: 500; line-height: 1.6; }
 .weather-now small { display: block; font-size: 18px; color: var(--muted); font-weight: 400; }
+
+.scene .clouds { opacity: 0; } .hero[data-t="day"] .clouds { opacity: .9; } .hero[data-t="dusk"] .clouds { opacity: .3; }
+.scene .cl { fill: #fff; }
+.scene .shoot { opacity: 0; } 
+.scene .pf { fill: #ece4d0; opacity: 0; }
+.hero[data-t="day"] .pf { fill: #fff; }
+.hero[data-t="day"] .shoot, .hero[data-t="dusk"] .shoot { display: none; }
+@keyframes cloudgo { from { transform: translateX(-90px); } to { transform: translateX(520px); } }
+@keyframes shoot { 0%, 78% { opacity: 0; transform: translate(380px, 40px); } 80% { opacity: 1; } 90% { opacity: 0; transform: translate(250px, 105px); } 100% { opacity: 0; transform: translate(250px, 105px); } }
+@keyframes puff { 0% { opacity: 0; transform: translate(0, 0) scale(.6); } 15% { opacity: .5; } 100% { opacity: 0; transform: translate(-14px, -64px) scale(2.6); } }
+@keyframes sunbob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+@media (prefers-reduced-motion: no-preference) {
+  .scene .stars { animation: none; }
+  .scene .st0 { animation: twinkle 3s ease-in-out infinite; }
+  .scene .st1 { animation: twinkle 4.3s ease-in-out -1.2s infinite; }
+  .scene .st2 { animation: twinkle 5.6s ease-in-out -2.5s infinite; }
+  .scene .c1 { animation: cloudgo 46s linear -10s infinite; } .scene .c2 { animation: cloudgo 70s linear -40s infinite; } .scene .c3 { animation: cloudgo 58s linear -25s infinite; }
+  .scene .shoot { animation: shoot 11s ease-in infinite; }
+  .scene .pf { animation: puff 5s ease-out infinite; transform-box: fill-box; transform-origin: center; }
+  .scene .p2 { animation-delay: -1.7s; } .scene .p3 { animation-delay: -3.4s; }
+  .scene .moon { animation: sunbob 7s ease-in-out infinite; }
+}
+.fs { right: 6px !important; }
+.fs span { display: none; }
 </style>
 </head>
 <body>
@@ -163,7 +187,7 @@ details[open] summary::after { content: "收起來"; }
 
 <!-- ========== 首頁 ========== -->
 <section id="home">
-  <div class="fs" id="fs" role="group" aria-label="字的大小"><span>字</span><button type="button" data-i="0">小</button><button type="button" data-i="1">標準</button><button type="button" data-i="2">大</button><button type="button" data-i="3">特大</button></div>
+  <div class="fs" id="fs" role="group" aria-label="字的大小"><button type="button" data-i="0">小</button><button type="button" data-i="1">標準</button><button type="button" data-i="2">大</button><button type="button" data-i="3">特大</button></div>
   <div class="hero">
     <div class="hero-head"><h1 class="hero-title" id="hero-greet">早安</h1>
     <p class="hero-sub">歡迎回到我們家</p></div>
@@ -174,13 +198,16 @@ details[open] summary::after { content: "收起來"; }
 <radialGradient id="glow" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#f6c06a" stop-opacity=".42"/><stop offset="1" stop-color="#f6c06a" stop-opacity="0"/></radialGradient>
 <mask id="moon"><rect width="420" height="420" fill="#fff"/><circle cx="342" cy="62" r="24" fill="#000"/></mask>
 </defs>
-<g class="stars"><circle cx="173" cy="46" r="1.6" fill="#f0eadd" opacity="0.35"/><circle cx="45" cy="218" r="0.8" fill="#f0eadd" opacity="0.70"/><circle cx="306" cy="22" r="1.0" fill="#f0eadd" opacity="0.35"/><circle cx="52" cy="119" r="1.6" fill="#f0eadd" opacity="0.35"/><circle cx="131" cy="31" r="1.6" fill="#f0eadd" opacity="0.35"/><circle cx="297" cy="39" r="1.0" fill="#f0eadd" opacity="0.35"/><circle cx="303" cy="157" r="1.6" fill="#f0eadd" opacity="0.35"/><circle cx="121" cy="19" r="1.0" fill="#f0eadd" opacity="0.70"/><circle cx="222" cy="44" r="0.8" fill="#f0eadd" opacity="0.70"/><circle cx="294" cy="216" r="1.0" fill="#f0eadd" opacity="0.35"/><circle cx="305" cy="154" r="1.0" fill="#f0eadd" opacity="0.70"/><circle cx="57" cy="148" r="0.8" fill="#f0eadd" opacity="0.35"/><circle cx="324" cy="60" r="1.6" fill="#f0eadd" opacity="0.90"/><circle cx="405" cy="88" r="1.6" fill="#f0eadd" opacity="0.90"/><circle cx="193" cy="84" r="1.0" fill="#f0eadd" opacity="0.50"/><circle cx="365" cy="207" r="1.0" fill="#f0eadd" opacity="0.35"/><circle cx="302" cy="84" r="1.6" fill="#f0eadd" opacity="0.70"/><circle cx="381" cy="122" r="1.2" fill="#f0eadd" opacity="0.35"/><circle cx="68" cy="139" r="1.6" fill="#f0eadd" opacity="0.50"/><circle cx="395" cy="95" r="1.0" fill="#f0eadd" opacity="0.90"/><circle cx="223" cy="18" r="0.8" fill="#f0eadd" opacity="0.70"/><circle cx="182" cy="185" r="1.2" fill="#f0eadd" opacity="0.90"/><circle cx="304" cy="212" r="1.6" fill="#f0eadd" opacity="0.35"/><circle cx="55" cy="77" r="1.6" fill="#f0eadd" opacity="0.35"/><circle cx="39" cy="195" r="1.2" fill="#f0eadd" opacity="0.90"/><circle cx="153" cy="191" r="1.6" fill="#f0eadd" opacity="0.70"/><circle cx="19" cy="126" r="1.2" fill="#f0eadd" opacity="0.50"/><circle cx="320" cy="37" r="1.6" fill="#f0eadd" opacity="0.35"/><circle cx="119" cy="204" r="1.2" fill="#f0eadd" opacity="0.50"/><circle cx="386" cy="71" r="1.6" fill="#f0eadd" opacity="0.90"/><circle cx="262" cy="28" r="1.0" fill="#f0eadd" opacity="0.90"/><circle cx="213" cy="148" r="1.2" fill="#f0eadd" opacity="0.50"/><circle cx="228" cy="229" r="1.2" fill="#f0eadd" opacity="0.90"/><circle cx="191" cy="182" r="1.6" fill="#f0eadd" opacity="0.50"/><circle cx="85" cy="29" r="1.0" fill="#f0eadd" opacity="0.50"/><circle cx="126" cy="176" r="1.0" fill="#f0eadd" opacity="0.35"/><circle cx="256" cy="220" r="1.0" fill="#f0eadd" opacity="0.70"/><circle cx="152" cy="9" r="1.0" fill="#f0eadd" opacity="0.90"/><circle cx="281" cy="102" r="1.2" fill="#f0eadd" opacity="0.50"/><circle cx="361" cy="227" r="0.8" fill="#f0eadd" opacity="0.90"/><circle cx="407" cy="182" r="1.6" fill="#f0eadd" opacity="0.90"/><circle cx="212" cy="108" r="0.8" fill="#f0eadd" opacity="0.90"/><circle cx="332" cy="110" r="0.8" fill="#f0eadd" opacity="0.50"/><circle cx="42" cy="61" r="1.6" fill="#f0eadd" opacity="0.50"/><circle cx="64" cy="95" r="0.8" fill="#f0eadd" opacity="0.35"/><circle cx="8" cy="153" r="1.0" fill="#f0eadd" opacity="0.35"/></g>
+<g class="stars st0"><circle cx="173" cy="46" r="1.6" fill="#f0eadd" opacity="0.35"/><circle cx="52" cy="119" r="1.6" fill="#f0eadd" opacity="0.35"/><circle cx="303" cy="157" r="1.6" fill="#f0eadd" opacity="0.35"/><circle cx="294" cy="216" r="1.0" fill="#f0eadd" opacity="0.35"/><circle cx="324" cy="60" r="1.6" fill="#f0eadd" opacity="0.90"/><circle cx="365" cy="207" r="1.0" fill="#f0eadd" opacity="0.35"/><circle cx="68" cy="139" r="1.6" fill="#f0eadd" opacity="0.50"/><circle cx="182" cy="185" r="1.2" fill="#f0eadd" opacity="0.90"/><circle cx="39" cy="195" r="1.2" fill="#f0eadd" opacity="0.90"/><circle cx="320" cy="37" r="1.6" fill="#f0eadd" opacity="0.35"/><circle cx="262" cy="28" r="1.0" fill="#f0eadd" opacity="0.90"/><circle cx="191" cy="182" r="1.6" fill="#f0eadd" opacity="0.50"/><circle cx="256" cy="220" r="1.0" fill="#f0eadd" opacity="0.70"/><circle cx="361" cy="227" r="0.8" fill="#f0eadd" opacity="0.90"/><circle cx="332" cy="110" r="0.8" fill="#f0eadd" opacity="0.50"/><circle cx="8" cy="153" r="1.0" fill="#f0eadd" opacity="0.35"/></g><g class="stars st1"><circle cx="45" cy="218" r="0.8" fill="#f0eadd" opacity="0.70"/><circle cx="131" cy="31" r="1.6" fill="#f0eadd" opacity="0.35"/><circle cx="121" cy="19" r="1.0" fill="#f0eadd" opacity="0.70"/><circle cx="305" cy="154" r="1.0" fill="#f0eadd" opacity="0.70"/><circle cx="405" cy="88" r="1.6" fill="#f0eadd" opacity="0.90"/><circle cx="302" cy="84" r="1.6" fill="#f0eadd" opacity="0.70"/><circle cx="395" cy="95" r="1.0" fill="#f0eadd" opacity="0.90"/><circle cx="304" cy="212" r="1.6" fill="#f0eadd" opacity="0.35"/><circle cx="153" cy="191" r="1.6" fill="#f0eadd" opacity="0.70"/><circle cx="119" cy="204" r="1.2" fill="#f0eadd" opacity="0.50"/><circle cx="213" cy="148" r="1.2" fill="#f0eadd" opacity="0.50"/><circle cx="85" cy="29" r="1.0" fill="#f0eadd" opacity="0.50"/><circle cx="152" cy="9" r="1.0" fill="#f0eadd" opacity="0.90"/><circle cx="407" cy="182" r="1.6" fill="#f0eadd" opacity="0.90"/><circle cx="42" cy="61" r="1.6" fill="#f0eadd" opacity="0.50"/></g><g class="stars st2"><circle cx="306" cy="22" r="1.0" fill="#f0eadd" opacity="0.35"/><circle cx="297" cy="39" r="1.0" fill="#f0eadd" opacity="0.35"/><circle cx="222" cy="44" r="0.8" fill="#f0eadd" opacity="0.70"/><circle cx="57" cy="148" r="0.8" fill="#f0eadd" opacity="0.35"/><circle cx="193" cy="84" r="1.0" fill="#f0eadd" opacity="0.50"/><circle cx="381" cy="122" r="1.2" fill="#f0eadd" opacity="0.35"/><circle cx="223" cy="18" r="0.8" fill="#f0eadd" opacity="0.70"/><circle cx="55" cy="77" r="1.6" fill="#f0eadd" opacity="0.35"/><circle cx="19" cy="126" r="1.2" fill="#f0eadd" opacity="0.50"/><circle cx="386" cy="71" r="1.6" fill="#f0eadd" opacity="0.90"/><circle cx="228" cy="229" r="1.2" fill="#f0eadd" opacity="0.90"/><circle cx="126" cy="176" r="1.0" fill="#f0eadd" opacity="0.35"/><circle cx="281" cy="102" r="1.2" fill="#f0eadd" opacity="0.50"/><circle cx="212" cy="108" r="0.8" fill="#f0eadd" opacity="0.90"/><circle cx="64" cy="95" r="0.8" fill="#f0eadd" opacity="0.35"/></g>
 <circle class="moon" cx="330" cy="68" r="26" fill="#ece4d0" mask="url(#moon)"/><circle class="sun" cx="330" cy="70" r="24" fill="#ffd98a"/>
 <path class="h1" d="M0 292 Q80 244 170 282 T330 262 T420 280 V420 H0Z"/>
 <path class="h2" d="M0 316 Q100 280 210 312 T420 300 V420 H0Z"/>
 <ellipse class="halo" cx="210" cy="306" rx="150" ry="78" fill="url(#glow)"/>
 <g fill="#0b0f15"><rect x="62" y="318" width="8" height="40"/><circle cx="66" cy="304" r="22"/><circle cx="50" cy="318" r="16"/><circle cx="82" cy="318" r="16"/><rect x="352" y="322" width="8" height="38"/><circle cx="356" cy="308" r="20"/><circle cx="342" cy="322" r="15"/><circle cx="370" cy="322" r="15"/></g>
-<path class="smoke" d="M254 232q-9-14 3-26q12-12-2-28" fill="none" stroke="#ece4d0" stroke-opacity=".3" stroke-width="5" stroke-linecap="round"/>
+<g class="clouds"><g class="cl c1"><ellipse cx="0" cy="136" rx="34" ry="11"/><ellipse cx="-16" cy="140" rx="22" ry="9"/><ellipse cx="18" cy="141" rx="24" ry="9"/></g><g class="cl c2"><ellipse cx="0" cy="190" rx="44" ry="13"/><ellipse cx="-22" cy="195" rx="28" ry="10"/><ellipse cx="24" cy="196" rx="30" ry="10"/></g><g class="cl c3"><ellipse cx="0" cy="106" rx="26" ry="8"/><ellipse cx="14" cy="110" rx="18" ry="7"/></g></g>
+<line class="shoot" x1="0" y1="0" x2="-46" y2="22" stroke="#f0eadd" stroke-width="2" stroke-linecap="round"/>
+<g class="puffs"><circle class="pf p1" cx="254" cy="232" r="6"/><circle class="pf p2" cx="254" cy="232" r="6"/><circle class="pf p3" cx="254" cy="232" r="6"/></g>
+<path class="smoke" style="display:none" d="M254 232q-9-14 3-26q12-12-2-28" fill="none" stroke="#ece4d0" stroke-opacity=".3" stroke-width="5" stroke-linecap="round"/>
 <rect x="246" y="236" width="14" height="30" fill="#242b38"/>
 <polygon points="138,274 210,222 282,274" fill="#242b38"/>
 <rect x="150" y="272" width="120" height="70" fill="#1b2029"/>
