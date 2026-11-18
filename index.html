@@ -85,7 +85,8 @@ em { font-style: normal; display: inline-block; font-size: 16px; color: var(--mu
 .menu a:active { filter: brightness(.9); }
 
 /* 內頁頁首 */
-.band { background: var(--accent); color: #fff; margin: 0 -16px 22px; padding: 14px 16px 18px; }
+.band { position: relative; overflow: hidden; background: var(--accent); color: #fff; margin: 0 -16px 22px; padding: 14px 16px 18px; }
+.band .art { position: absolute; right: 10px; top: 10px; width: 132px; height: auto; pointer-events: none; }
 .band .back { display: inline-flex; align-items: center; min-height: 52px; padding: 6px 20px; border-radius: 999px; background: rgba(255,255,255,.2); color: #fff; font-size: 21px; font-weight: 700; text-decoration: none; }
 .band h1 { color: #fff; margin: 12px 0 4px; }
 .band .stamp { color: rgba(255,255,255,.92); }
@@ -164,6 +165,7 @@ details[open] summary::after { content: "收起來"; }
 <!-- ========== 今日新聞（每日自動更新區塊） ========== -->
 <section id="news" hidden>
   <header class="band">
+    <svg class="art" viewBox="0 0 140 110" aria-hidden="true"><circle cx="108" cy="30" r="15" fill="rgba(255,255,255,.55)"/><polygon points="0,110 26,62 44,80 76,22 108,76 124,60 140,110" fill="rgba(255,255,255,.26)"/><polygon points="0,110 40,78 70,96 104,70 140,110" fill="rgba(255,255,255,.34)"/><polygon points="76,22 66,40 72,37 76,43 82,36 88,40" fill="rgba(255,255,255,.7)"/></svg>
     <a class="back" href="#home">← 回首頁</a>
     <h1>今日新聞</h1>
     <p class="stamp" id="news-stamp">最後更新：2026/11/18（三）01:20:00。內容為 11/17（二）的新聞。</p>
@@ -221,6 +223,7 @@ details[open] summary::after { content: "收起來"; }
 <!-- ========== 股市摘要（每日自動更新區塊） ========== -->
 <section id="stock" hidden>
   <header class="band">
+    <svg class="art" viewBox="0 0 140 110" aria-hidden="true"><g fill="rgba(255,255,255,.3)"><rect x="8" y="70" width="18" height="38" rx="3"/><rect x="34" y="52" width="18" height="56" rx="3"/><rect x="60" y="60" width="18" height="48" rx="3"/><rect x="86" y="34" width="18" height="74" rx="3"/><rect x="112" y="20" width="18" height="88" rx="3"/></g><polyline points="17,62 43,44 69,52 95,26 121,12" fill="none" stroke="rgba(255,255,255,.9)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="121" cy="12" r="6" fill="#fff"/></svg>
     <a class="back" href="#home">← 回首頁</a>
     <h1>股市摘要</h1>
     <p class="stamp" id="stock-stamp">最後更新：2026/11/18（三）01:20:00。台股為 11/17 收盤，美股為 11/16 收盤。</p>
@@ -283,6 +286,7 @@ details[open] summary::after { content: "收起來"; }
 <!-- ========== 廚房與音樂 ========== -->
 <section id="recipe" hidden>
   <header class="band">
+    <svg class="art" viewBox="0 0 140 110" aria-hidden="true"><path d="M20 62h100c0 26-20 42-50 42S20 88 20 62z" fill="rgba(255,255,255,.32)"/><path d="M26 62h88" stroke="rgba(255,255,255,.85)" stroke-width="4" stroke-linecap="round"/><path d="M50 44c-7-8 7-12 0-22M70 44c-7-8 7-12 0-22M90 44c-7-8 7-12 0-22" fill="none" stroke="rgba(255,255,255,.8)" stroke-width="4" stroke-linecap="round"/><path d="M96 14l24 40M106 12l22 38" stroke="rgba(255,255,255,.9)" stroke-width="4" stroke-linecap="round"/><path d="M52 104h36" stroke="rgba(255,255,255,.6)" stroke-width="4" stroke-linecap="round"/></svg>
     <a class="back" href="#home">← 回首頁</a>
     <h1>家常菜食譜</h1>
     <p class="stamp">點菜名，就會展開做法。</p>
@@ -308,6 +312,7 @@ details[open] summary::after { content: "收起來"; }
 
 <section id="music" hidden>
   <header class="band">
+    <svg class="art" viewBox="0 0 140 110" aria-hidden="true"><circle cx="56" cy="58" r="46" fill="rgba(255,255,255,.28)"/><circle cx="56" cy="58" r="34" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="2"/><circle cx="56" cy="58" r="22" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="2"/><circle cx="56" cy="58" r="12" fill="rgba(255,255,255,.85)"/><circle cx="56" cy="58" r="3" fill="#6341a3"/><path d="M104 74V26l26-8v46" fill="none" stroke="rgba(255,255,255,.9)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="96" cy="76" r="9" fill="rgba(255,255,255,.95)"/><circle cx="122" cy="66" r="9" fill="rgba(255,255,255,.95)"/></svg>
     <a class="back" href="#home">← 回首頁</a>
     <h1>聽歌與找歌</h1>
     <p class="stamp">想聽歌就點一下，也可以用歌詞找歌。</p>
