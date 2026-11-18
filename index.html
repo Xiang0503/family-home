@@ -584,14 +584,30 @@ details[open] summary::after { content: "收起來"; }
     var el = document.getElementById("wx"); if (!el || !window.fetch) return;
     var C = { 0: "晴天", 1: "晴時多雲", 2: "多雲", 3: "陰天", 45: "起霧", 48: "起霧", 51: "毛毛雨", 53: "毛毛雨", 55: "毛毛雨", 61: "小雨", 63: "下雨", 65: "大雨", 80: "陣雨", 81: "陣雨", 82: "大雨", 95: "雷雨", 96: "雷雨", 99: "雷雨" };
     var u = "https://api.open-meteo.com/v1/forecast?latitude=23.8925&longitude=120.4631&current=temperature_2m,weather_code&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=Asia%2FTaipei&forecast_days=1";
-    fetch(u).then(function (r) { return r.json(); }).then(function (j) {
+    var KEY = "familyWx1";
+    function show(j, note) {
       var t = Math.round(j.current.temperature_2m), w = C[j.current.weather_code] || "天氣良好";
       var lo = Math.round(j.daily.temperature_2m_min[0]), hi = Math.round(j.daily.temperature_2m_max[0]), r = j.daily.precipitation_probability_max[0];
       var tip = r >= 50 ? "記得帶傘" : r >= 30 ? "可以帶把傘" : t <= 17 ? "天冷，多穿一點" : t >= 30 ? "天熱，多喝水" : lo <= 18 ? "早晚涼，帶件外套" : "天氣舒服";
       var hero = document.querySelector(".hero"), wc = j.current.weather_code; if (hero && ((wc >= 51 && wc <= 67) || (wc >= 80 && wc <= 82) || wc >= 95)) hero.setAttribute("data-w", "rain");
-      el.innerHTML = "彰化埤頭　" + t + "°C　" + w + "<small>今天 " + lo + "–" + hi + "°C，下雨機率 " + r + "%。" + tip + "</small>";
+      el.innerHTML = "彰化埤頭　" + t + "°C　" + w + "<small>今天 " + lo + "–" + hi + "°C，下雨機率 " + r + "%。" + tip + (note || "") + "</small>";
       el.hidden = false;
-    }).catch(function () { el.innerHTML = "<small>今天的天氣暫時抓不到，<a href=\"https://www.cwa.gov.tw/V8/C/\" style=\"color:var(--glow)\">點這裡看氣象署</a></small>"; el.hidden = false; });
+    }
+    function fallback() {
+      var c = null;
+      try { c = JSON.parse(localStorage.getItem(KEY) || "null"); } catch (e) {}
+      if (c && c.j && Date.now() - c.t < 12 * 3600000) {
+        try { var d = new Date(c.t + (480 + new Date(c.t).getTimezoneOffset()) * 60000); show(c.j, "（" + (d.getMonth() + 1) + "/" + d.getDate() + " " + d.getHours() + ":" + ("0" + d.getMinutes()).slice(-2) + " 的資料）"); return; } catch (e) {}
+      }
+      el.innerHTML = "<small>今天的天氣暫時抓不到，<a href=\"https://www.cwa.gov.tw/V8/C/\" style=\"color:var(--glow)\">點這裡看氣象署</a></small>"; el.hidden = false;
+    }
+    el.innerHTML = "<small>天氣載入中…</small>"; el.hidden = false;
+    var done = false, timer = setTimeout(function () { if (!done) { done = true; fallback(); } }, 8000);
+    fetch(u).then(function (r) { if (!r.ok) throw new Error("http " + r.status); return r.json(); }).then(function (j) {
+      if (done) return; done = true; clearTimeout(timer);
+      show(j);
+      try { localStorage.setItem(KEY, JSON.stringify({ t: Date.now(), j: j })); } catch (e) {}
+    }).catch(function () { if (done) return; done = true; clearTimeout(timer); fallback(); });
   })();
 
   (function () {
