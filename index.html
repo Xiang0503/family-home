@@ -419,7 +419,34 @@ details[open] summary::after { content: "收起來"; }
     try { window.scrollTo(0, 0); } catch (e) {}
   }
   window.addEventListener("hashchange", show);
+  // 直接開內頁時，先墊一層「首頁」，這樣手機的返回鍵／左滑會回到首頁，而不是跳出網站
+  try {
+    var h0 = location.hash;
+    if (views.indexOf(h0.slice(1)) > 0) { history.replaceState(null, "", "#home"); history.pushState(null, "", h0); }
+  } catch (e) {}
   show();
+  function goBack() {
+    if (location.hash.slice(1) === "home" || !location.hash) return;
+    var before = location.hash;
+    history.back();
+    setTimeout(function () { if (location.hash === before) location.hash = "#home"; }, 350);
+  }
+  // 「回首頁」按鈕：跟返回鍵一樣的行為，不會讓歷史越堆越多
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest ? e.target.closest("a.back, a.back-bottom") : null;
+    if (!a) return;
+    e.preventDefault(); goBack();
+  });
+  // iPhone 沒有返回鍵：從螢幕左邊緣往右滑，回上一頁
+  var sx = 0, sy = 0, st = 0, edge = false;
+  document.addEventListener("touchstart", function (e) {
+    var t = e.touches[0]; sx = t.clientX; sy = t.clientY; st = Date.now(); edge = sx < 40 && e.touches.length === 1;
+  }, { passive: true });
+  document.addEventListener("touchend", function (e) {
+    if (!edge) return; edge = false;
+    var t = e.changedTouches[0], dx = t.clientX - sx, dy = Math.abs(t.clientY - sy);
+    if (dx > 70 && dy < 60 && Date.now() - st < 800) goBack();
+  }, { passive: true });
 })();
 
   (function () {
